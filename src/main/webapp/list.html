@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bites & More — Shopping Cart</title>
+  <!-- Nhúng đúng đường dẫn file CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wire-page">
+
+  <!-- TOPBAR -->
+  <div class="wf-topbar">FREE DELIVERY ON ORDERS OVER 100.000VND&nbsp;&nbsp;|&nbsp;&nbsp;CALL US: (000) 123-4567</div>
+  
+  <!-- HEADER -->
+  <div class="wf-header">
+    <div class="wf-logo">BITES &amp; MORE</div>
+    <nav class="wf-nav">
+      <a href="home.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="categories.html">Categories <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="6,9 12,15 18,9"/></svg></a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="wf-searchbar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search products...</span>
+    </div>
+    <div class="wf-icons">
+      <a href="favorites.html" class="ic-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
+        <span class="badge">3</span>
+      </a>
+      <a href="cart.html" class="ic-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="badge">3</span>
+      </a>
+      <a href="login.html" class="ic-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <span>Home</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="9,6 15,12 9,18"/></svg>
+    <span>Shopping Cart</span>
+  </div>
+
+  <!-- MAIN CART SECTION -->
+  <div class="section" style="padding:40px;">
+    <div class="section-title" style="text-align:left;margin-bottom:30px;">Shopping Cart (3 Items)</div>
+    <div class="row">
+      
+      <!-- Cột Trái: Bảng Sản Phẩm Trong Giỏ -->
+      <div class="col-8">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead>
+            <tr style="border-bottom:2px solid #000;text-align:left;">
+              <th style="padding:14px 10px;">Product</th>
+              <th style="padding:14px 10px;">Price</th>
+              <th style="padding:14px 10px;">Quantity</th>
+              <th style="padding:14px 10px;">Subtotal</th>
+              <th style="padding:14px 10px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <!-- Món 1 -->
+            <tr style="border-bottom:1px solid #999;">
+              <td style="display:flex;align-items:center;gap:14px;padding:16px 10px;">
+                <div class="img-ph" style="width:70px;height:70px;flex-shrink:0;">Image</div>
+                <span style="font-weight:bold;">Sourdough Bread</span>
+              </td>
+              <td style="padding:16px 10px;">180.000VND</td>
+              <td style="padding:16px 10px;">
+                <div style="display:flex;border:1px solid #000;width:110px;align-items:center;">
+                  <button style="padding:6px 12px;border:none;border-right:1px solid #000;background:#fff;cursor:pointer;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <div style="padding:6px 14px;font-weight:bold;">1</div>
+                  <button style="padding:6px 12px;border:none;border-left:1px solid #000;background:#fff;cursor:pointer;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+              </td>
+              <td style="font-weight:bold;padding:16px 10px;">180.000VND</td>
+              <td style="padding:16px 10px;cursor:pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </td>
+            </tr>
+
+            <!-- Món 2 -->
+            <tr style="border-bottom:1px solid #999;">
+              <td style="display:flex;align-items:center;gap:14px;padding:16px 10px;">
+                <div class="img-ph" style="width:70px;height:70px;flex-shrink:0;">Image</div>
+                <span style="font-weight:bold;">Chocolate Cupcake</span>
+              </td>
+              <td style="padding:16px 10px;">30.500VND</td>
+              <td style="padding:16px 10px;">
+                <div style="display:flex;border:1px solid #000;width:110px;align-items:center;">
+                  <button style="padding:6px 12px;border:none;border-right:1px solid #000;background:#fff;cursor:pointer;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <div style="padding:6px 14px;font-weight:bold;">1</div>
+                  <button style="padding:6px 12px;border:none;border-left:1px solid #000;background:#fff;cursor:pointer;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+              </td>
+              <td style="font-weight:bold;padding:16px 10px;">30.500VND</td>
+              <td style="padding:16px 10px;cursor:pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </td>
+            </tr>
+
+            <!-- Món 3 -->
+            <tr style="border-bottom:1px solid #999;">
+              <td style="display:flex;align-items:center;gap:14px;padding:16px 10px;">
+                <div class="img-ph" style="width:70px;height:70px;flex-shrink:0;">Image</div>
+                <span style="font-weight:bold;">Red Velvet Cake</span>
+              </td>
+              <td style="padding:16px 10px;">180.000VND</td>
+              <td style="padding:16px 10px;">
+                <div style="display:flex;border:1px solid #000;width:110px;align-items:center;">
+                  <button style="padding:6px 12px;border:none;border-right:1px solid #000;background:#fff;cursor:pointer;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <div style="padding:6px 14px;font-weight:bold;">1</div>
+                  <button style="padding:6px 12px;border:none;border-left:1px solid #000;background:#fff;cursor:pointer;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+              </td>
+              <td style="font-weight:bold;padding:16px 10px;">180.000VND</td>
+              <td style="padding:16px 10px;cursor:pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <div style="display:flex;justify-content:space-between;margin-top:30px;align-items:center;">
+          <a href="shop.html" class="btn" style="display:inline-flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="15,6 9,12 15,18"/></svg> 
+            Continue Shopping
+          </a>
+          <div style="display:flex;gap:10px;">
+            <input class="input" style="width:220px;" placeholder="Coupon Code">
+            <button class="btn btn-dark">Apply Coupon</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cột Phải: Tổng Tiền Đơn Hàng -->
+      <div class="col-4">
+        <div class="filter-block">
+          <h5 style="border-bottom:1px solid #000;padding-bottom:10px;margin-bottom:16px;">Order Summary</h5>
+          <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:14px;"><span>Subtotal</span><span>350.000VND</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:14px;"><span>Shipping</span><span>50.000VND</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:14px;"><span>Discount</span><span>-0.000VND</span></div>
+
+          <hr style="border:none;border-top:1px solid #000;margin:14px 0;">
+
+          <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:bold;margin-bottom:24px;"><span>Total</span><span>400.000VND</span></div>
+
+          <a href="checkout.html" class="btn btn-dark btn-block" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;">
+            Proceed to Checkout 
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14,6 20,12 14,18"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="wf-footer">
+    <div class="footer-bottom">
+      <span>© 2026 Bites &amp; More. All rights reserved.</span>
+      <span>Privacy Policy &nbsp;|&nbsp; Terms of Service</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Nhúng file JS để kết nối gọi Servlet -->
+<script src="js/app.js"></script>
+</body>
+</html>

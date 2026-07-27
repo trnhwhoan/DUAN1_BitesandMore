@@ -48,7 +48,7 @@
       <img src="images/banner.jpg" alt="Sourdough Bread" style="width:100%; height:220px; object-fit:cover;">
     </div>
     <div style="padding:40px 80px;text-align:center;border-top:1px solid #000;">
-      <div style="font-size:30px;font-weight:bold;margin-bottom:12px;">BÁNH NGON, BÁNH TƯƠI HƠN NGƯỜI YÊU CŨ CỦA BẠN</div>
+      <div style="font-size:30px;font-weight:bold;margin-bottom:12px;">BÁNH NGON, BÁNH TƯƠI</div>
       <div style="font-size:14px;color:#444;margin-bottom:20px;">Hãy cùng khám phá những món bánh ngon nhất!</div>
       <a href="shop.jsp" class="btn btn-dark">Shop Now 
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14,6 20,12 14,18"/></svg>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bites & More — Categories</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wire-page">
+
+  <!-- TOPBAR -->
+  <div class="wf-topbar">FREE DELIVERY ON ORDERS OVER 100.000VND&nbsp;&nbsp;|&nbsp;&nbsp;CALL US: (000) 123-4567</div>
+  
+  <!-- HEADER -->
+  <div class="wf-header">
+    <a href="home.jsp" class="wf-logo" style="color:#000;text-decoration:none;">BITES &amp; MORE</a>
+    
+    <nav class="wf-nav">
+      <a href="home.jsp">Home</a>
+      <a href="shop.jsp">Shop</a>
+      
+      <div class="dropdown">
+        <a href="categories.jsp" style="text-decoration:underline;">Categories 
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="6,9 12,15 18,9"/></svg>
+        </a>
+        <div class="dropdown-menu">
+          <a href="shop.jsp?category=breads">Breads</a>
+          <a href="shop.jsp?category=cakes">Cakes</a>
+          <a href="shop.jsp?category=pastries">Pastries</a>
+          <a href="shop.jsp?category=cookies">Cookies</a>
+          <a href="shop.jsp?category=donuts">Donuts</a>
+          <a href="shop.jsp?category=cupcakes">Cupcakes</a>
+        </div>
+      </div>
+
+      <a href="about.jsp">About</a>
+      <a href="contact.jsp">Contact</a>
+    </nav>
+
+    <!-- SEARCHBAR & ICONS TRONG KHUNG HEADER -->
+    <div style="display:flex;align-items:center;gap:20px;flex:1;max-width:500px;justify-content:flex-end;">
+      <div class="wf-searchbar" style="margin:0;width:100%;max-width:280px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search products...</span>
+      </div>
+
+      <div class="wf-icons">
+        <a href="favorites.jsp" class="ic-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
+          <span class="badge">3</span>
+        </a>
+        <a href="cart.jsp" class="ic-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="badge">2</span>
+        </a>
+        <a href="login.jsp" class="ic-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <span>Home</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><polyline points="9,6 15,12 9,18"/></svg>
+    <span>Categories</span>
+  </div>
+
+  <!-- HERO BANNER -->
+  <div class="section" style="padding:0;">
+    <div class="img-ph" style="height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+      <div style="font-size:28px;font-weight:bold;letter-spacing:1px;">EXPLORE OUR BAKERY COLLECTIONS</div>
+      <div style="font-size:14px;color:#444;">From fresh morning sourdoughs to indulgent birthday cakes</div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES GRID SECTION -->
+  <div class="section" style="padding:40px;">
+    <div class="section-title">Product Categories</div>
+    <div class="section-subtitle">Select a category to view all available delicious treats</div>
+
+    <div class="row">
+      
+      <div class="col-4" style="margin-bottom:30px;">
+        <div class="product-card" style="text-align:center;padding-bottom:20px;">
+          <div class="img-ph" style="height:200px;margin-bottom:16px;">Image (Breads)</div>
+          <div style="font-size:18px;font-weight:bold;margin-bottom:8px;">Artisanal Breads</div>
+          <div style="font-size:13px;color:#555;padding:0 16px;margin-bottom:16px;line-height:1.5;">Freshly baked sourdough, baguettes, and whole wheat loaves every morning.</div>
+          <a href="shop.jsp?category=breads" class="btn btn-dark btn-sm">Explore Collection</a>
+        </div>
+      </div>
+
+      <div class="col-4" style="margin-bottom:30px;">
+        <div class="product-card" style="text-align:center;padding-bottom:20px;">
+          <div class="img-ph" style="height:200px;margin-bottom:16px;">Image (Cakes)</div>
+          <div style="font-size:18px;font-weight:bold;margin-bottom:8px;">Custom &amp; Layer Cakes</div>
+          <div style="font-size:13px;color:#555;padding:0 16px;margin-bottom:16px;line-height:1.5;">Handcrafted birthday cakes, Red Velvet, and decadent chocolate creations.</div>
+          <a href="shop.jsp?category=cakes" class="btn btn-dark btn-sm">Explore Collection</a>
+        </div>
+      </div>
+
+      <div class="col-4" style="margin-bottom:30px;">
+        <div class="product-card" style="text-align:center;padding-bottom:20px;">
+          <div class="img-ph" style="height:200px;margin-bottom:16px;">Image (Pastries)</div>
+          <div style="font-size:18px;font-weight:bold;margin-bottom:8px;">French Pastries</div>
+          <div style="font-size:13px;color:#555;padding:0 16px;margin-bottom:16px;line-height:1.5;">Flaky butter croissants, fruit tarts, and delicate puff pastries.</div>
+          <a href="shop.jsp?category=pastries" class="btn btn-dark btn-sm">Explore Collection</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="wf-footer">
+    <div class="footer-bottom">
+      <span>© 2026 Bites &amp; More. All rights reserved.</span>
+      <span>Privacy Policy &nbsp;|&nbsp; Terms of Service</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

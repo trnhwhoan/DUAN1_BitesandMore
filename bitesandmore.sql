@@ -5,6 +5,7 @@ GO
 USE BitesandMore;
 GO
 
+
 CREATE TABLE [User] (
     user_id INT PRIMARY KEY IDENTITY(1,1),
     full_name NVARCHAR(100) NOT NULL,
@@ -275,7 +276,7 @@ VALUES
     N'Bánh mì Baguette',
     N'Bánh mì Baguette truyền thống Pháp, vỏ giòn tan, ruột mềm xốp, thơm mùi bột mì nguyên chất',
     28000.00,
-    '34a497fc88313f66649e0569c8e795ec.jpg',
+    'https://i.pinimg.com/736x/34/a4/97/34a497fc88313f66649e0569c8e795ec.jpg',
     N'Bột mì, nước, muối, men bánh mì',
     5,
     100,
@@ -291,7 +292,7 @@ VALUES
     N'Bánh mì hoa cúc',
     N'Bánh mì hoa cúc mềm xốp, hình dáng hoa cúc đẹp mắt, vị bơ sữa thơm béo ngậy',
     65000.00,
-    '12b58ecc51dc513790c8dbf4a00a8ba4.jpg',
+    'https://i.pinimg.com/1200x/12/b5/8e/12b58ecc51dc513790c8dbf4a00a8ba4.jpg',
     N'Bột mì, bơ, sữa tươi, trứng, đường, men bánh mì',
     5,
     50,
@@ -307,7 +308,7 @@ VALUES
     N'Bánh mì sữa Hokkaido',
     N'Bánh mì sữa Hokkaido mềm mịn như bông, vị ngọt nhẹ, thơm mùi sữa tươi nguyên chất',
     55000.00,
-    '926787bdc56844c3a9e486841f04c695.jpg',
+    'https://i.pinimg.com/736x/92/67/87/926787bdc56844c3a9e486841f04c695.jpg',
     N'Bột mì, sữa tươi Hokkaido, bơ, đường, men bánh mì',
     5,
     60,
@@ -323,7 +324,7 @@ VALUES
     N'Bánh mì bơ tỏi',
     N'Bánh mì bơ tỏi thơm lừng, bơ béo ngậy, tỏi vàng giòn, ăn là ghiền',
     42000.00,
-    '45eaca05a7b549d801ab35e8b3cc7356.jpg',
+    'https://i.pinimg.com/736x/45/ea/ca/45eaca05a7b549d801ab35e8b3cc7356.jpg',
     N'Bánh mì Baguette, bơ, tỏi, rau mùi, muối',
     3,
     80,

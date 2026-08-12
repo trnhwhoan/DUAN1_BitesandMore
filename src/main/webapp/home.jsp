@@ -556,32 +556,32 @@
 
       <div class="categories-grid">
         <a href="shop?category=1" class="cat-card">
-          <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400" alt="Bánh mì"></div>
+          <div class="cat-img-box"><img src="https://i.pinimg.com/736x/4e/e9/3e/4ee93e77f189f2f8ea14a456ed3660ac.jpg" alt="Bánh mì"></div>
           <div style="font-size:13px;font-weight:bold;">Bánh mì</div>
         </a>
 
         <a href="shop?category=2" class="cat-card">
-          <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=400" alt="Bánh kem"></div>
+          <div class="cat-img-box"><img src="https://i.pinimg.com/736x/5c/3f/5d/5c3f5dd987b02e24d467f5d7b21d477a.jpg" alt="Bánh kem"></div>
           <div style="font-size:13px;font-weight:bold;">Bánh kem</div>
         </a>
 
         <a href="shop?category=3" class="cat-card">
-          <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400" alt="Bánh ngàn lớp"></div>
+          <div class="cat-img-box"><img src="https://i.pinimg.com/1200x/96/10/90/96109054b68f5068042c7ed6b54f8cfc.jpg" alt="Bánh ngàn lớp"></div>
           <div style="font-size:13px;font-weight:bold;">Bánh Ngọt Bơ &amp; Ngàn Lớp</div>
         </a>
 
         <a href="shop?category=4" class="cat-card">
-          <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=400" alt="Bánh quy"></div>
+          <div class="cat-img-box"><img src="https://i.pinimg.com/736x/d6/fb/a8/d6fba8968dea3e3855f0a972e52a9992.jpg" alt="Bánh quy"></div>
           <div style="font-size:13px;font-weight:bold;">Bánh quy</div>
         </a>
 
         <a href="shop?category=5" class="cat-card">
-          <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?q=80&w=400" alt="Bánh Donut"></div>
+          <div class="cat-img-box"><img src="https://i.pinimg.com/1200x/49/82/1d/49821dca984d2ebd70a0c52b17904f2f.jpg" alt="Bánh Donut"></div>
           <div style="font-size:13px;font-weight:bold;">Bánh Donuts</div>
         </a>
 
         <a href="shop?category=6" class="cat-card">
-          <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1519869325930-281384150729?q=80&w=400" alt="Bánh Cupcake"></div>
+          <div class="cat-img-box"><img src="https://i.pinimg.com/1200x/dd/1b/1e/dd1b1e8b11aca672ca558434b77be18d.jpg" alt="Bánh Cupcake"></div>
           <div style="font-size:13px;font-weight:bold;">Bánh Cupcake</div>
         </a>
       </div>
@@ -600,7 +600,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
           </div>
           <div class="product-img-wrap">
-            <img src="images/5d9fc32d56126074219b204adc604a58.jpg" alt="Bánh mì Baguette" onError="this.onerror=null;this.src='images/placeholder.jpg';">
+            <img src="https://i.pinimg.com/736x/34/a4/97/34a497fc88313f66649e0569c8e795ec.jpg" alt="Bánh mì Baguette" onError="this.onerror=null;this.src='images/placeholder.jpg';">
           </div>
           <div class="product-info">
             <div class="p-title">Bánh mì Baguette</div>
@@ -615,7 +615,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
           </div>
           <div class="product-img-wrap">
-            <img src="images/47be84309ce929918fadebfd363e9619.webp" alt="Bánh mì hoa cúc" onError="this.onerror=null;this.src='images/placeholder.jpg';">
+            <img src="https://i.pinimg.com/1200x/12/b5/8e/12b58ecc51dc513790c8dbf4a00a8ba4.jpg" alt="Bánh mì hoa cúc" onError="this.onerror=null;this.src='images/placeholder.jpg';">
           </div>
           <div class="product-info">
             <div class="p-title">Bánh mì hoa cúc</div>
@@ -630,7 +630,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
           </div>
           <div class="product-img-wrap">
-            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400" alt="Bánh mì sữa Hokkaido" onError="this.onerror=null;this.src='images/placeholder.jpg';">
+            <img src="https://i.pinimg.com/736x/92/67/87/926787bdc56844c3a9e486841f04c695.jpg" alt="Bánh mì sữa Hokkaido" onError="this.onerror=null;this.src='images/placeholder.jpg';">
           </div>
           <div class="product-info">
             <div class="p-title">Bánh mì sữa Hokkaido</div>
@@ -645,7 +645,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
           </div>
           <div class="product-img-wrap">
-            <img src="images/91865ec3a35f437be843c7b5b3f0c4e0.jpg" alt="Bánh mì bơ tỏi" onError="this.onerror=null;this.src='images/placeholder.jpg';">
+            <img src="https://i.pinimg.com/736x/45/ea/ca/45eaca05a7b549d801ab35e8b3cc7356.jpg" alt="Bánh mì bơ tỏi" onError="this.onerror=null;this.src='images/placeholder.jpg';">
           </div>
           <div class="product-info">
             <div class="p-title">Bánh mì bơ tỏi</div>
@@ -664,7 +664,7 @@
 
       <div class="reviews-grid">
         <div class="review-card">
-          <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">Như Hoàn</div>
+          <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">Mỹ Tiên</div>
           <div style="margin-bottom:8px;display:flex;gap:2px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,21.5 12,17.8 5.5,21.5 7,14.5 2,9.5 9,9"/></svg>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,21.5 12,17.8 5.5,21.5 7,14.5 2,9.5 9,9"/></svg>
@@ -676,7 +676,7 @@
         </div>
 
         <div class="review-card">
-          <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">Tuấn Tú</div>
+          <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">Gia Bảo Nguyễn</div>
           <div style="margin-bottom:8px;display:flex;gap:2px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,21.5 12,17.8 5.5,21.5 7,14.5 2,9.5 9,9"/></svg>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,21.5 12,17.8 5.5,21.5 7,14.5 2,9.5 9,9"/></svg>
@@ -688,7 +688,7 @@
         </div>
 
         <div class="review-card">
-          <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">Thế Đan</div>
+          <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">Julia Trần</div>
           <div style="margin-bottom:8px;display:flex;gap:2px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,21.5 12,17.8 5.5,21.5 7,14.5 2,9.5 9,9"/></svg>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,21.5 12,17.8 5.5,21.5 7,14.5 2,9.5 9,9"/></svg>

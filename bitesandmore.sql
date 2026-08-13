@@ -61,7 +61,7 @@ CREATE TABLE Product (
         CHECK ([status] IN (N'Active', N'Inactive')),
     category_id INT NOT NULL,
     brand_id INT NULL,
-    created_at DATETIME DEFAULT GETDATE(),
+    created_at DATETIME2(3) NOT NULL DEFAULT CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00')),
     FOREIGN KEY (category_id) REFERENCES Category(category_id),
     FOREIGN KEY (brand_id) REFERENCES Brand(brand_id)
 );
@@ -70,7 +70,7 @@ GO
 CREATE TABLE Cart (
     cart_id INT PRIMARY KEY IDENTITY(1,1),
     user_id INT NOT NULL,
-    created_at DATETIME DEFAULT GETDATE(),
+    created_at DATETIME2(3) NOT NULL DEFAULT CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00')),
     FOREIGN KEY (user_id) REFERENCES [User](user_id)
 );
 GO
@@ -128,7 +128,7 @@ CREATE TABLE [Order] (
     recipient_name NVARCHAR(100) NOT NULL,
     recipient_phone VARCHAR(15) NOT NULL,
     recipient_email VARCHAR(255) NULL,
-    order_date DATETIME DEFAULT GETDATE(),
+    order_date DATETIME2(0) NOT NULL DEFAULT CONVERT(datetime2(0), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00')),
     total_amount DECIMAL(18,2) NOT NULL CHECK (total_amount >= 0),
     discount_amount DECIMAL(18,2) DEFAULT 0 CHECK (discount_amount >= 0),
     shipping_fee DECIMAL(10,2) DEFAULT 0 CHECK (shipping_fee >= 0),
@@ -143,7 +143,7 @@ CREATE TABLE [Order] (
     order_note NVARCHAR(500) NULL,
     discount_id INT NULL,
     estimated_delivery DATE NULL,
-    created_at DATETIME DEFAULT GETDATE(),
+    created_at DATETIME2(3) NOT NULL DEFAULT CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00')),
     FOREIGN KEY (user_id) REFERENCES [User](user_id),
     FOREIGN KEY (payment_id) REFERENCES Payment(payment_id),
     FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
@@ -169,7 +169,7 @@ CREATE TABLE Order_Status_History (
     [status] NVARCHAR(50) NOT NULL 
         CHECK ([status] IN (N'Pending', N'Confirmed', N'Processing', N'Shipping', N'Delivered', N'Completed', N'Cancelled')),
     note NVARCHAR(255) NULL,
-    created_at DATETIME DEFAULT GETDATE(),
+    created_at DATETIME2(3) NOT NULL DEFAULT CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00')),
     FOREIGN KEY (order_id) REFERENCES [Order](order_id) ON DELETE CASCADE
 );
 GO
@@ -251,11 +251,11 @@ BEGIN
         recipient_email, order_date, total_amount, discount_amount,
         shipping_fee, final_amount, [status], payment_id, payment_status,
         shipping_address, shipping_note, order_note, discount_id,
-        estimated_delivery, GETDATE()
+        estimated_delivery, CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00'))
     FROM inserted;
     
     INSERT INTO Order_Status_History (order_id, [status], note, created_at)
-    SELECT order_id, [status], N'Tạo đơn hàng', GETDATE()
+    SELECT order_id, [status], N'Tạo đơn hàng', CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00'))
     FROM [Order]
     WHERE order_code = @new_order_code;
 END
@@ -1478,3 +1478,42 @@ VALUES (
 -- SELECT product_id, product_name, image
 -- FROM Product
 -- ORDER BY product_id;
+
+
+USE BitesandMore;
+GO
+CREATE OR ALTER TRIGGER trg_GenerateOrderCode
+ON [Order]
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @new_order_code VARCHAR(20);
+    DECLARE @order_id INT;
+    SELECT @order_id = ISNULL(MAX(order_id), 0) + 1 FROM [Order];
+    SET @new_order_code = 'DH-' + FORMAT(SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00'), 'yyyyMMdd') + '-'
+        + RIGHT('000' + CAST(@order_id AS VARCHAR(3)), 3);
+    INSERT INTO [Order] (order_code, user_id, recipient_name, recipient_phone, recipient_email,
+        order_date, total_amount, discount_amount, shipping_fee, final_amount, [status], payment_id,
+        payment_status, shipping_address, shipping_note, order_note, discount_id, estimated_delivery, created_at)
+    SELECT @new_order_code, user_id, recipient_name, recipient_phone, recipient_email,
+        COALESCE(order_date, CONVERT(datetime2(0), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00'))),
+        total_amount, discount_amount, shipping_fee, final_amount, [status], payment_id,
+        payment_status, shipping_address, shipping_note, order_note, discount_id, estimated_delivery,
+        CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00'))
+    FROM inserted;
+    INSERT INTO Order_Status_History (order_id, [status], note, created_at)
+    SELECT order_id, [status], N'Tạo đơn hàng', CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00'))
+    FROM [Order] WHERE order_code = @new_order_code;
+END;
+GO
+
+USE BitesandMore;
+GO
+
+SELECT DB_NAME() AS current_database;
+SELECT OBJECT_ID('[dbo].[Order]') AS order_table_id;
+
+SELECT name
+FROM sys.triggers
+WHERE name = 'trg_GenerateOrderCode';

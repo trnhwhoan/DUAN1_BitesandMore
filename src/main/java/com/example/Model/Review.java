@@ -10,6 +10,8 @@ public class Review {
     private int rating;
     private String content;
     private Date reviewDate;
+    private String userName;
+    private String productName;
 
     public Review() {
     }
@@ -25,6 +27,31 @@ public class Review {
 
     public int getReviewId() {
         return reviewId;
+    }
+
+    // Aliases and display fields used by admin-reviews.jsp.
+    public int getId() {
+        return reviewId;
+    }
+
+    public Date getCreatedAt() {
+        return reviewDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public void setReviewId(int reviewId) {

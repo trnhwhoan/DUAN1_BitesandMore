@@ -11,6 +11,36 @@ import com.example.Util.DBContext;
 
 public class ReviewDAO {
 
+    // Lấy toàn bộ đánh giá kèm tên khách hàng và sản phẩm cho trang quản trị.
+    public List<Review> getAllReviews() {
+        List<Review> list = new ArrayList<>();
+        String sql = "SELECT r.*, u.full_name AS user_name, p.product_name "
+                + "FROM Review r "
+                + "LEFT JOIN [User] u ON u.user_id = r.user_id "
+                + "LEFT JOIN Product p ON p.product_id = r.product_id "
+                + "ORDER BY r.review_date DESC";
+
+        try (Connection con = DBContext.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Review review = new Review(
+                        rs.getInt("review_id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("product_id"),
+                        rs.getInt("rating"),
+                        rs.getString("content"),
+                        rs.getTimestamp("review_date"));
+                review.setUserName(rs.getString("user_name"));
+                review.setProductName(rs.getString("product_name"));
+                list.add(review);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     // Lấy tất cả đánh giá của một sản phẩm
     public List<Review> getByProductId(int productId) {
         List<Review> list = new ArrayList<>();

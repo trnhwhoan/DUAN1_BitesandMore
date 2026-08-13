@@ -263,29 +263,6 @@
       transform: scale(1.05);
     }
 
-    .fav-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid var(--border-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 5;
-      color: var(--pink-primary);
-      transition: all 0.2s;
-    }
-    .fav-btn:hover, .fav-btn.active {
-      background: var(--pink-primary);
-      color: #fff;
-      border-color: var(--pink-primary);
-    }
-
     .add-cart-btn {
       border: 1.5px solid var(--pink-primary);
       background: #fff;
@@ -459,8 +436,7 @@
       </form>
       <div style="display:flex; gap:12px;">
         <a href="feedback" class="ic-btn feedback-link" title="Góp ý">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-          <span class="badge fav-count">${not empty sessionScope.favoriteList ? sessionScope.favoriteList.size() : 0}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
         </a>
         <a href="cart.jsp" class="ic-btn" title="Giỏ hàng">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -597,10 +573,6 @@
               <c:forEach items="${productList}" var="p">
                 <div class="product-box" data-category="${p.categoryId}" style="width:100%;">
                   
-                  <button type="button" class="fav-btn" data-id="${p.id != 0 ? p.id : p.productId}" title="Thêm vào yêu thích">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-                  </button>
-
                   <div class="product-img-wrap">
                     <a href="product-detail?id=${p.id != 0 ? p.id : p.productId}">
                       <img src="${p.image}" alt="${p.productName}" onError="this.onerror=null;this.src='images/placeholder.jpg';">
@@ -896,20 +868,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (data) { setBadge('.cart-count', data.cartSize); button.innerHTML = 'ĐÃ THÊM ✓'; })
         .catch(function (e) { alert(e.message); })
         .finally(function () { setTimeout(function () { button.innerHTML = oldContent; button.disabled = false; }, 1200); });
-    });
-  });
-  document.querySelectorAll('.fav-btn').forEach(function (button) {
-    button.addEventListener('click', function () {
-      var body = new URLSearchParams({productId:button.dataset.id, action:'toggle'});
-      fetch('favorite', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'}, body:body.toString()})
-        .then(function (r) {
-          return r.text().then(function (text) {
-            if (!r.ok) throw new Error(text || 'Request failed');
-            try { return JSON.parse(text); } catch (e) { throw new Error('Invalid server response'); }
-          });
-        })
-        .then(function (data) { setBadge('.fav-count', data.favoriteSize); button.classList.toggle('active', data.favorite); })
-        .catch(function () { alert('Không thể cập nhật yêu thích.'); });
     });
   });
 });

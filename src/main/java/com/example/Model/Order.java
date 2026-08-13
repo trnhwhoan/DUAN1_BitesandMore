@@ -47,6 +47,19 @@ public class Order {
         return orderId;
     }
 
+    // Aliases used by the administration JSP pages.
+    public int getId() {
+        return orderId;
+    }
+
+    public String getCustomerName() {
+        return recipientName;
+    }
+
+    public Timestamp getCreatedAt() {
+        return orderDate;
+    }
+
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
@@ -138,16 +151,16 @@ public class Order {
     public BigDecimal getFinalAmount() { return finalAmount; }
     public void setFinalAmount(BigDecimal finalAmount) { this.finalAmount = finalAmount; }
 
-    public double getTotalPrice() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public BigDecimal getTotalPrice() {
+        return finalAmount != null ? finalAmount : totalAmount;
     }
 
     public String getAddress() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return shippingAddress;
     }
 
     public String getPhone() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return recipientPhone;
     }
 
 }

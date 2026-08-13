@@ -77,7 +77,9 @@ public class OrderDAO {
     // Lấy tất cả đơn hàng
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Order]";
+        String sql = "SELECT order_id, user_id, recipient_name, recipient_phone, order_date, "
+                + "total_amount, COALESCE(final_amount, total_amount) AS final_amount, [status], payment_id, payment_status, shipping_address, shipping_fee "
+                + "FROM [Order] ORDER BY order_date DESC";
 
         try {
             conn = DBContext.getConnection();
@@ -85,7 +87,7 @@ public class OrderDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                list.add(new Order(
+                Order order = new Order(
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getString("recipient_name"),
@@ -97,13 +99,52 @@ public class OrderDAO {
                         rs.getString("payment_status"),
                         rs.getString("shipping_address"),
                         rs.getBigDecimal("shipping_fee")
-                ));
+                );
+                order.setFinalAmount(rs.getBigDecimal("final_amount"));
+                list.add(order);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return list;
+    }
+
+    public BigDecimal getTotalRevenue() {
+        String sql = "SELECT COALESCE(SUM(COALESCE(final_amount, total_amount)), 0) "
+                + "FROM [Order] WHERE ISNULL([status], N'Pending') <> N'Cancelled'";
+        try (Connection connection = DBContext.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
+            return result.next() ? result.getBigDecimal(1) : BigDecimal.ZERO;
+        } catch (Exception e) { e.printStackTrace(); return BigDecimal.ZERO; }
+    }
+
+    public int getTotalSoldQuantity() {
+        String sql = "SELECT COALESCE(SUM(d.quantity), 0) FROM Order_Detail d "
+                + "INNER JOIN [Order] o ON o.order_id=d.order_id "
+                + "WHERE ISNULL(o.[status], N'Pending') <> N'Cancelled'";
+        try (Connection connection = DBContext.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
+            return result.next() ? result.getInt(1) : 0;
+        } catch (Exception e) { e.printStackTrace(); return 0; }
+    }
+
+    public boolean updateStatus(int orderId, String status) {
+        String sql = "UPDATE [Order] SET [status] = ? WHERE order_id = ?";
+        String historySql = "INSERT INTO Order_Status_History(order_id, [status], note) VALUES (?, ?, N'Cập nhật từ trang quản trị')";
+        try (Connection connection = DBContext.getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, status); ps.setInt(2, orderId);
+                if (ps.executeUpdate() != 1) { connection.rollback(); return false; }
+            }
+            try (PreparedStatement ps = connection.prepareStatement(historySql)) {
+                ps.setInt(1, orderId); ps.setString(2, status); ps.executeUpdate();
+            }
+            connection.commit(); return true;
+        } catch (Exception e) { e.printStackTrace(); return false; }
     }
 
     // Lấy đơn hàng theo ID
@@ -306,7 +347,7 @@ public boolean createOrder(Order order) {
          PreparedStatement ps = conn.prepareStatement(sql)) {
         
         ps.setInt(1, order.getUserId());
-        ps.setDouble(2, order.getTotalPrice());
+        ps.setBigDecimal(2, order.getTotalPrice());
         ps.setString(3, "Pending");
         ps.setString(4, order.getAddress());
         ps.setString(5, order.getPhone());

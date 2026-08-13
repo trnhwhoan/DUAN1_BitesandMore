@@ -28,7 +28,7 @@ public class ProfileUpdateServlet extends HttpServlet {
         String streetAddress = request.getParameter("streetAddress");
         if (blank(fullName) || blank(phoneNumber)) {
             session.setAttribute("profileError", "Họ tên và số điện thoại là bắt buộc.");
-            response.sendRedirect("profile.jsp");
+            response.sendRedirect("profile");
             return;
         }
         account.setFullName(fullName.trim());
@@ -44,7 +44,7 @@ public class ProfileUpdateServlet extends HttpServlet {
         } else {
             session.setAttribute("profileError", "Không thể cập nhật hồ sơ.");
         }
-        response.sendRedirect("profile.jsp");
+        response.sendRedirect("profile");
     }
     private boolean blank(String value) { return value == null || value.trim().isEmpty(); }
 }

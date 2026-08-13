@@ -457,6 +457,7 @@
       text-transform: uppercase;
     }
     .status-badge.pending { background: #fff3cd; color: #856404; }
+    .status-badge.confirmed { background: #e6fffa; color: #234e52; }
     .status-badge.completed { background: #d4edda; color: #155724; }
     .status-badge.cancelled { background: #f8d7da; color: #721c24; }
 
@@ -495,31 +496,30 @@
   
   <!-- HEADER -->
   <header class="wf-header">
-    <a href="home.jsp" class="brand-logo">
+    <a href="home" class="brand-logo">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 14c-1.5 0-3-1.5-3-3 0-4 3.5-7 9-7s9 3 9 7c0 1.5-1.5 3-3 3"/><path d="M8 14c0 3 2 5 4 5s4-2 4-5"/><path d="M12 4v10"/></svg>
       BITES &amp; MORE
     </a>
     
     <nav class="wf-nav">
-      <a href="home.jsp">Trang chủ</a>
+      <a href="home">Trang chủ</a>
       <a href="shop">Cửa hàng</a>
-      <a href="categories.jsp">Danh mục</a>
-      <a href="about.jsp">Giới thiệu</a>
+      <a href="categories">Danh mục</a>
+      <a href="about">Giới thiệu</a>
       <a href="contact">Liên hệ</a>
     </nav>
 
     <div class="header-actions">
      <a href="feedback" class="ic-btn feedback-link" title="Góp ý">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-          <span class="badge fav-count">${not empty sessionScope.favoriteList ? sessionScope.favoriteList.size() : 0}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
         </a>
 
-        <a href="cart.jsp" class="ic-btn" title="Giỏ hàng">
+        <a href="cart" class="ic-btn" title="Giỏ hàng">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           <span class="badge cart-count">${not empty sessionScope.cartSize ? sessionScope.cartSize : 0}</span>
         </a>
 
-      <a href="profile.jsp" class="ic-btn" title="Tài khoản cá nhân" style="border-color:var(--pink-primary); color:var(--pink-primary);">
+      <a href="profile" class="ic-btn" title="Tài khoản cá nhân" style="border-color:var(--pink-primary); color:var(--pink-primary);">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="8" r="4"/>
           <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
@@ -698,6 +698,9 @@
                             <c:choose>
                               <c:when test="${o.status == 'Pending' || o.status == 'Chờ xử lý'}">
                                 <span class="status-badge pending">Chờ xử lý</span>
+                              </c:when>
+                              <c:when test="${o.status == 'Confirmed' || o.status == 'Đã xác nhận'}">
+                                <span class="status-badge confirmed">Đã xác nhận</span>
                               </c:when>
                               <c:when test="${o.status == 'Completed' || o.status == 'Hoàn thành'}">
                                 <span class="status-badge completed">Hoàn thành</span>

@@ -476,26 +476,26 @@
   
   <!-- HEADER -->
   <header class="wf-header">
-    <a href="home.jsp" class="brand-logo">BITES &amp; MORE</a>
+    <a href="home" class="brand-logo">BITES &amp; MORE</a>
     
     <nav class="wf-nav">
-      <a href="home.jsp">Trang chủ</a>
+      <a href="home">Trang chủ</a>
       <a href="shop">Cửa hàng</a>
-      <a href="categories.jsp">Danh mục</a>
-      <a href="about.jsp">Giới thiệu</a>
+      <a href="categories">Danh mục</a>
+      <a href="about">Giới thiệu</a>
       <a href="contact">Liên hệ</a>
     </nav>
 
     <div class="header-actions">
-      <a href="favorites.jsp" class="ic-btn" title="Yêu thích">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
+      <a href="feedback" class="ic-btn feedback-link" title="Góp ý">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       </a>
 
-      <a href="cart.jsp" class="ic-btn" title="Giỏ hàng">
+        <a href="cart" class="ic-btn" title="Giỏ hàng">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
       </a>
 
-      <a href="profile.jsp" class="ic-btn" title="Tài khoản">
+      <a href="profile" class="ic-btn" title="Tài khoản">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
       </a>
     </div>
@@ -518,23 +518,6 @@
         <div class="main-img-wrap">
           <img id="main-product-img" src="${product.image}" alt="${product.productName}" onError="this.onerror=null;this.src='images/placeholder.jpg';">
         </div>
-
-        <!-- DÀN 4 THUMBNAILS CHO KHÁCH BẤM ĐỔI ẢNH -->
-        <div class="thumbnail-grid">
-          <div class="thumb-item active" onclick="changeMainImage('${product.image}', this)">
-            <img src="${product.image}" alt="Thumb 1" onError="this.onerror=null;this.src='images/placeholder.jpg';">
-          </div>
-          <div class="thumb-item" onclick="changeMainImage('${not empty product.image ? product.image : 'images/placeholder.jpg'}', this)">
-            <img src="${product.image}" alt="Thumb 2" onError="this.onerror=null;this.src='images/placeholder.jpg';">
-          </div>
-          <div class="thumb-item" onclick="changeMainImage('${not empty product.image ? product.image : 'images/placeholder.jpg'}', this)">
-            <img src="${product.image}" alt="Thumb 3" onError="this.onerror=null;this.src='images/placeholder.jpg';">
-          </div>
-          <div class="thumb-item" onclick="changeMainImage('${not empty product.image ? product.image : 'images/placeholder.jpg'}', this)">
-            <img src="${product.image}" alt="Thumb 4" onError="this.onerror=null;this.src='images/placeholder.jpg';">
-          </div>
-        </div>
-      </div>
 
       <!-- CỘT THÔNG TIN CHÍNH -->
       <div class="info-box">
@@ -622,7 +605,7 @@
                 <div class="review-form-box" style="text-align:center; padding:24px;">
                   <div style="font-weight:700; font-size:14px; margin-bottom:8px;">Bạn cần đặt món này trước khi đánh giá nhé</div>
                   <div style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">Hãy đặt sản phẩm trong giỏ hàng, sau đó quay lại chia sẻ cảm nhận của bạn.</div>
-                  <a href="cart.jsp" id="btn-add-review-product-to-cart"
+                  <a href="cart" id="btn-add-review-product-to-cart"
                      data-product-id="${product.id != 0 ? product.id : product.productId}"
                      class="btn-submit-review" style="display:inline-block; text-decoration:none;">ĐI ĐẾN GIỎ HÀNG</a>
                 </div>

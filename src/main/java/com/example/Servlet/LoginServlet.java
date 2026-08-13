@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 
         // Nếu người dùng ĐÃ ĐĂNG NHẬP rồi mà cố tình truy cập lại /login -> Chuyển hướng sang profile luôn
         if (session.getAttribute("account") != null) {
-            response.sendRedirect("profile.jsp");
+            response.sendRedirect("profile");
             return;
         }
 

@@ -421,27 +421,6 @@
       border-radius: 12px;
       border: 1px solid var(--border-soft);
     }
-    .fav-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid var(--border-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 5;
-      color: var(--pink-primary);
-      transition: all 0.2s;
-    }
-    .fav-btn:hover {
-      background: var(--pink-primary);
-      color: #fff;
-    }
     .product-info {
       padding: 16px;
     }
@@ -591,8 +570,7 @@
         </div>
 
         <a href="feedback" class="ic-btn feedback-link" title="Góp ý">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-          <span class="badge fav-count">${not empty sessionScope.favoriteList ? sessionScope.favoriteList.size() : 0}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
         </a>
 
         <a href="cart.jsp" class="ic-btn" title="Giỏ hàng">
@@ -710,32 +688,32 @@
         </div>
 
         <div class="categories-grid">
-          <a href="shop?category=1" class="cat-card">
+          <a href="category?id=1" class="cat-card">
             <div class="cat-img-box"><img src="https://i.pinimg.com/736x/4e/e9/3e/4ee93e77f189f2f8ea14a456ed3660ac.jpg" alt="Bánh mì"></div>
             <div style="font-size:13px;font-weight:700;">Bánh mì</div>
           </a>
 
-          <a href="shop?category=2" class="cat-card">
+          <a href="category?id=2" class="cat-card">
             <div class="cat-img-box"><img src="https://i.pinimg.com/736x/5c/3f/5d/5c3f5dd987b02e24d467f5d7b21d477a.jpg" alt="Bánh kem"></div>
             <div style="font-size:13px;font-weight:700;">Bánh kem</div>
           </a>
 
-          <a href="shop?category=3" class="cat-card">
+          <a href="category?id=3" class="cat-card">
             <div class="cat-img-box"><img src="https://i.pinimg.com/1200x/96/10/90/96109054b68f5068042c7ed6b54f8cfc.jpg" alt="Bánh ngàn lớp"></div>
             <div style="font-size:13px;font-weight:700;">Ngọt &amp; Ngàn Lớp</div>
           </a>
 
-          <a href="shop?category=4" class="cat-card">
+          <a href="category?id=4" class="cat-card">
             <div class="cat-img-box"><img src="https://i.pinimg.com/736x/d6/fb/a8/d6fba8968dea3e3855f0a972e52a9992.jpg" alt="Bánh quy"></div>
             <div style="font-size:13px;font-weight:700;">Bánh quy</div>
           </a>
 
-          <a href="shop?category=5" class="cat-card">
+          <a href="category?id=5" class="cat-card">
             <div class="cat-img-box"><img src="https://i.pinimg.com/1200x/49/82/1d/49821dca984d2ebd70a0c52b17904f2f.jpg" alt="Bánh Donut"></div>
             <div style="font-size:13px;font-weight:700;">Bánh Donuts</div>
           </a>
 
-          <a href="shop?category=6" class="cat-card">
+          <a href="category?id=6" class="cat-card">
             <div class="cat-img-box"><img src="https://i.pinimg.com/1200x/dd/1b/1e/dd1b1e8b11aca672ca558434b77be18d.jpg" alt="Bánh Cupcake"></div>
             <div style="font-size:13px;font-weight:700;">Bánh Cupcake</div>
           </a>
@@ -758,9 +736,6 @@
           <div class="product-box">
             <div class="product-img-wrap">
               <span class="p-tag">⭐ Best Seller</span>
-              <div class="fav-btn" title="Thêm vào yêu thích">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-              </div>
               <img src="https://i.pinimg.com/736x/34/a4/97/34a497fc88313f66649e0569c8e795ec.jpg" alt="Bánh mì Baguette" onError="this.onerror=null;this.src='images/placeholder.jpg';">
             </div>
             <div class="product-info">
@@ -777,9 +752,6 @@
           <div class="product-box">
             <div class="product-img-wrap">
               <span class="p-tag">🥐 Thơm bơ</span>
-              <div class="fav-btn" title="Thêm vào yêu thích">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-              </div>
               <img src="https://i.pinimg.com/1200x/12/b5/8e/12b58ecc51dc513790c8dbf4a00a8ba4.jpg" alt="Bánh mì hoa cúc" onError="this.onerror=null;this.src='images/placeholder.jpg';">
             </div>
             <div class="product-info">
@@ -796,9 +768,6 @@
           <div class="product-box">
             <div class="product-img-wrap">
               <span class="p-tag">🥛 Sữa tươi</span>
-              <div class="fav-btn" title="Thêm vào yêu thích">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-              </div>
               <img src="https://i.pinimg.com/736x/92/67/87/926787bdc56844c3a9e486841f04c695.jpg" alt="Bánh mì sữa Hokkaido" onError="this.onerror=null;this.src='images/placeholder.jpg';">
             </div>
             <div class="product-info">
@@ -815,9 +784,6 @@
           <div class="product-box">
             <div class="product-img-wrap">
               <span class="p-tag">🧄 Phô mai</span>
-              <div class="fav-btn" title="Thêm vào yêu thích">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5.5 6 5c2-.3 3.5.8 6 3.3C14.5 5.8 16 4.7 18 5c3.5.5 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
-              </div>
               <img src="https://i.pinimg.com/736x/45/ea/ca/45eaca05a7b549d801ab35e8b3cc7356.jpg" alt="Bánh mì bơ tỏi" onError="this.onerror=null;this.src='images/placeholder.jpg';">
             </div>
             <div class="product-info">

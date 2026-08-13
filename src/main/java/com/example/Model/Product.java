@@ -16,6 +16,7 @@ public class Product {
     private String usageInstructions;
     private int categoryId;
     private float rating;
+    private int soldQuantity;
 
     // Constructor rỗng
     public Product() {
@@ -130,5 +131,13 @@ public class Product {
 
     public float getRating() {
         return rating;
+    }
+
+    public int getSoldQuantity() {
+        return soldQuantity;
+    }
+
+    public void setSoldQuantity(int soldQuantity) {
+        this.soldQuantity = soldQuantity;
     }
 }

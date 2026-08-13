@@ -1358,7 +1358,16 @@ FROM Product p
 LEFT JOIN Category c ON p.category_id = c.category_id
 ORDER BY p.category_id;
 
--- thêm người dùng và admin
+-- Tài khoản quản trị mặc định: admin@gmail.com / admin123
+IF EXISTS (SELECT 1 FROM [User] WHERE email = 'admin@gmail.com')
+BEGIN
+    UPDATE [User]
+    SET [password] = 'admin123', [role] = N'Admin', [status] = N'Active',
+        full_name = N'Admin Hệ Thống', phone_number = '0900000000'
+    WHERE email = 'admin@gmail.com';
+END
+ELSE
+BEGIN
 INSERT INTO [User] (
     full_name, email, phone_number, password,
     gender, date_of_birth, address, role, status, created_at
@@ -1399,6 +1408,22 @@ VALUES (
     N'Active',      
     GETDATE()
 );
+END;
+
+-- Tài khoản admin mới (dùng khi tài khoản cũ bị sai thông tin)
+IF NOT EXISTS (SELECT 1 FROM [User] WHERE email = 'admin2@bitesandmore.com')
+BEGIN
+    INSERT INTO [User] (
+        full_name, email, phone_number, [password], gender, date_of_birth,
+        [address], [role], [status], created_at
+    ) VALUES (
+        N'Quản trị viên Bites & More',
+        'admin2@bitesandmore.com',
+        '0900000001',
+        'Admin@123',
+        N'Khác', '2000-01-01', N'Đà Nẵng', N'Admin', N'Active', GETDATE()
+    );
+END;
 
 
 

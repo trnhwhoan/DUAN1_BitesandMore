@@ -22,7 +22,12 @@ public class ProductDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
+            String rawId = request.getParameter("id");
+            if (rawId == null || rawId.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/shop");
+                return;
+            }
+            int id = Integer.parseInt(rawId.trim());
             Product product = new ProductDAO().getProductById(id);
             if (product == null || !"Active".equalsIgnoreCase(product.getStatus())) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found.");
@@ -38,6 +43,7 @@ public class ProductDetailServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product id.");
         } catch (RuntimeException e) {
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to load product.");
         }
     }

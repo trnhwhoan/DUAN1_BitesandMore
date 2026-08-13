@@ -15,6 +15,49 @@ public class ProductDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
+    /** Returns products that appear in orders, ranked by quantity sold.
+     * Their image is read from Product.image. Cancelled orders are excluded. */
+    public List<Product> getBestSellingProducts(int limit) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP (?) p.*, sales.sold_quantity "
+                + "FROM Product p "
+                + "INNER JOIN ("
+                + "  SELECT od.product_id, SUM(od.quantity) AS sold_quantity "
+                + "  FROM Order_Detail od "
+                + "  INNER JOIN [Order] o ON o.order_id = od.order_id "
+                + "  WHERE ISNULL(o.[status], N'Pending') <> N'Cancelled' "
+                + "  GROUP BY od.product_id"
+                + ") sales ON sales.product_id = p.product_id "
+                + "ORDER BY sales.sold_quantity DESC, p.product_id DESC";
+
+        try (Connection connection = DBContext.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    Product product = new Product(
+                            result.getInt("product_id"),
+                            result.getString("product_name"),
+                            result.getString("description"),
+                            result.getBigDecimal("price"),
+                            result.getString("image"),
+                            result.getString("ingredient"),
+                            result.getInt("expiry_date"),
+                            result.getString("status"),
+                            result.getInt("quantity"),
+                            result.getString("usage_instructions"),
+                            result.getInt("category_id"),
+                            0f);
+                    product.setSoldQuantity(result.getInt("sold_quantity"));
+                    list.add(product);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     // Lấy tất cả sản phẩm
     public List<Product> getAllProducts() {
         List<Product> list = new ArrayList<>();

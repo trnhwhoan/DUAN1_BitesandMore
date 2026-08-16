@@ -140,4 +140,12 @@ public class Product {
     public void setSoldQuantity(int soldQuantity) {
         this.soldQuantity = soldQuantity;
     }
+
+    public void setImageUrl(String imageUrl) {
+    this.image = imageUrl; // hoặc this.imageUrl = imageUrl (tùy tên biến bạn đặt)
+}
+
+public String getImageUrl() {
+    return this.image != null ? this.image : this.image;
+}
 }

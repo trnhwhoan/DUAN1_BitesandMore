@@ -194,12 +194,19 @@
               <c:when test="${not empty orderList}">
                 <c:forEach items="${orderList}" var="o">
                   <tr>
-                    <td><strong style="color:var(--pink-primary);">#BM${o.id}</strong></td>
-                    <td><strong>${o.customerName}</strong></td>
-                    <td>${o.phone}</td>
-                    <td>${o.address}</td>
-                    <td><fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
-                    <td><strong style="color:var(--text-chocolate);"><fmt:formatNumber value="${o.totalPrice}" pattern="#,##0"/>đ</strong></td>
+                    <td>
+                      <!-- Click vào mã đơn để xem chi tiết -->
+                      <strong style="color:var(--pink-primary); cursor:pointer; text-decoration:underline;" 
+                              onclick="viewAdminOrderDetail('${o.orderId != null ? o.orderId : o.id}')"
+                              title="Bấm để xem danh sách món bánh">
+                        #BM${o.orderId != null ? o.orderId : o.id}
+                      </strong>
+                    </td>
+                    <td><strong>${o.recipientName != null ? o.recipientName : (o.fullName != null ? o.fullName : o.customerName)}</strong></td>
+                    <td>${o.recipientPhone != null ? o.recipientPhone : (o.phoneNumber != null ? o.phoneNumber : o.phone)}</td>
+                    <td>${o.shippingAddress != null ? o.shippingAddress : o.address}</td>
+                    <td><fmt:formatDate value="${o.orderDate != null ? o.orderDate : o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
+                    <td><strong style="color:var(--text-chocolate);"><fmt:formatNumber value="${o.finalAmount != null ? o.finalAmount : (o.totalAmount != null ? o.totalAmount : o.totalPrice)}" pattern="#,##0"/>đ</strong></td>
                     <td>
                       <c:choose>
                         <c:when test="${o.status == 'Confirmed'}"><span class="status-badge confirmed"><span class="status-dot"></span>Đã xác nhận</span></c:when>
@@ -210,7 +217,7 @@
                     </td>
                     <td style="text-align:center;">
                       <form action="update-order-status" method="POST" style="display:inline-flex; align-items:center; gap:8px;">
-                        <input type="hidden" name="orderId" value="${o.id}">
+                        <input type="hidden" name="orderId" value="${o.orderId != null ? o.orderId : o.id}">
                         <select name="status" class="select-status-edit">
                           <option value="Pending" ${o.status == 'Pending' ? 'selected' : ''}>Chờ xử lý</option>
                           <option value="Confirmed" ${o.status == 'Confirmed' ? 'selected' : ''}>Đã xác nhận</option>
@@ -227,7 +234,13 @@
               <c:otherwise>
                 <!-- DỮ LIỆU MẪU KHI CHƯA LOAD DATABASE -->
                 <tr>
-                  <td><strong style="color:var(--pink-primary);">#BM1</strong></td>
+                  <td>
+                    <strong style="color:var(--pink-primary); cursor:pointer; text-decoration:underline;" 
+                            onclick="viewAdminOrderDetail('1')"
+                            title="Bấm để xem danh sách món bánh">
+                      #BM1
+                    </strong>
+                  </td>
                   <td><strong>Như Hoàn Tr</strong></td>
                   <td>0766766341</td>
                   <td>123 Nguyễn Lương Bằng, Đà Nẵng</td>
@@ -256,6 +269,94 @@
 </div>
 
 <footer class="minimal-footer">&copy; Bites &amp; More. since 2026</footer>
+
+<!-- POPUP MODAL XEM CHI TIẾT ĐƠN HÀNG CHO ADMIN -->
+<div id="adminOrderDetailModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background:#fff; width:90%; max-width:650px; border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,0.2); position:relative;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-bottom:16px;">
+            <h3 id="adminModalOrderCode" style="margin:0; font-size:1.2rem; color:var(--pink-primary); font-weight:bold;">CHI TIẾT ĐƠN HÀNG</h3>
+            <span onclick="closeAdminModal()" style="font-size:24px; font-weight:bold; cursor:pointer; color:#999; line-height:1;">&times;</span>
+        </div>
+        
+        <div style="max-height:350px; overflow-y:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
+                <thead>
+                    <tr style="background:var(--pink-subtle); color:var(--pink-dark); border-bottom:1px solid var(--border-soft);">
+                        <th style="padding:10px;">Món Bánh</th>
+                        <th style="padding:10px; text-align:center;">Số Lượng</th>
+                        <th style="padding:10px; text-align:right;">Đơn Giá</th>
+                        <th style="padding:10px; text-align:right;">Tạm Tính</th>
+                    </tr>
+                </thead>
+                <tbody id="adminModalItemsBody">
+                    <!-- Dữ liệu JS sẽ nạp vào đây -->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="border-top:1px solid #f0f0f0; margin-top:16px; padding-top:14px; display:flex; justify-content:space-between; align-items:center;">
+            <button type="button" onclick="closeAdminModal()" style="background:#f1f2f6; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-weight:700; color:#57606f;">Đóng</button>
+            <div style="font-size:16px; font-weight:bold;">TỔNG TIỀN: <span id="adminModalTotalPrice" style="color:var(--pink-dark); font-size:18px;">0đ</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT FETCH DỮ LIỆU ĐƠN HÀNG -->
+<script>
+function viewAdminOrderDetail(orderId) {
+    if (!orderId) return;
+    document.getElementById('adminModalOrderCode').innerText = "CHI TIẾT ĐƠN HÀNG #BM" + orderId;
+    var tbody = document.getElementById('adminModalItemsBody');
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#666;">Đang tải chi tiết món bánh...</td></tr>';
+    document.getElementById('adminOrderDetailModal').style.display = 'flex';
+
+    fetch('order-detail?orderId=' + orderId)
+        .then(function(res) {
+            if (!res.ok) throw new Error("Lỗi mạng: " + res.status);
+            return res.json();
+        })
+        .then(function(data) {
+            tbody.innerHTML = '';
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#888;">Không tìm thấy món bánh nào trong đơn hàng này.</td></tr>';
+                document.getElementById('adminModalTotalPrice').innerText = '0đ';
+                return;
+            }
+            var total = 0;
+            data.forEach(function(item) {
+                var price = Number(item.price) || 0;
+                var qty = Number(item.quantity) || 0;
+                var subtotal = price * qty;
+                total += subtotal;
+                tbody.innerHTML += `
+                    <tr style="border-bottom:1px solid #f5f5f5;">
+                        <td style="padding:10px; font-weight:600; color:var(--text-chocolate);">\${item.productName}</td>
+                        <td style="padding:10px; text-align:center;">\${qty}</td>
+                        <td style="padding:10px; text-align:right;">\${price.toLocaleString('vi-VN')}đ</td>
+                        <td style="padding:10px; text-align:right; font-weight:bold; color:var(--pink-dark);">\${subtotal.toLocaleString('vi-VN')}đ</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('adminModalTotalPrice').innerText = total.toLocaleString('vi-VN') + 'đ';
+        })
+        .catch(function(err) {
+            console.error(err);
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red; padding:15px;">Lỗi khi tải chi tiết đơn hàng!</td></tr>';
+        });
+}
+
+function closeAdminModal() {
+    document.getElementById('adminOrderDetailModal').style.display = 'none';
+}
+
+// Bấm ra ngoài vùng modal để đóng popup
+window.addEventListener('click', function(e) {
+    var modal = document.getElementById('adminOrderDetailModal');
+    if (e.target === modal) {
+        closeAdminModal();
+    }
+});
+</script>
 
 </body>
 </html>

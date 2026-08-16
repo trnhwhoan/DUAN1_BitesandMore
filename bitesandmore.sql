@@ -141,12 +141,10 @@ CREATE TABLE [Order] (
     shipping_address NVARCHAR(255) NOT NULL,
     shipping_note NVARCHAR(500) NULL,
     order_note NVARCHAR(500) NULL,
-    discount_id INT NULL,
     estimated_delivery DATE NULL,
     created_at DATETIME2(3) NOT NULL DEFAULT CONVERT(datetime2(3), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+07:00')),
     FOREIGN KEY (user_id) REFERENCES [User](user_id),
-    FOREIGN KEY (payment_id) REFERENCES Payment(payment_id),
-    FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
+    FOREIGN KEY (payment_id) REFERENCES Payment(payment_id)
 );
 GO
 
@@ -156,7 +154,6 @@ CREATE TABLE Order_Detail (
     product_id INT NOT NULL,
     quantity INT NOT NULL CHECK (quantity > 0),
     unit_price DECIMAL(18,2) NOT NULL CHECK (unit_price >= 0),
-    discount_percent DECIMAL(5,2) DEFAULT 0 CHECK (discount_percent BETWEEN 0 AND 100),
     subtotal DECIMAL(18,2) NOT NULL CHECK (subtotal >= 0),
     FOREIGN KEY (order_id) REFERENCES [Order](order_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES Product(product_id)
@@ -1425,86 +1422,6 @@ BEGIN
     );
 END;
 
-
-
--- version update link anh danh cho ai da tung download code truoc do
-
--- USE BiteandMoree
--- GO
-
--- UPDATE p
--- SET p.image = v.image
--- FROM Product p
--- JOIN (VALUES
---     (1,  'https://i.pinimg.com/736x/34/a4/97/34a497fc88313f66649e0569c8e795ec.jpg'),
---     (2,  'https://i.pinimg.com/1200x/12/b5/8e/12b58ecc51dc513790c8dbf4a00a8ba4.jpg'),
---     (3,  'https://i.pinimg.com/736x/92/67/87/926787bdc56844c3a9e486841f04c695.jpg'),
---     (4,  'https://i.pinimg.com/736x/45/ea/ca/45eaca05a7b549d801ab35e8b3cc7356.jpg'),
---     (5,  'https://i.pinimg.com/1200x/3d/6a/a4/3d6aa475bf64fda9f7db14fbba472218.jpg'),
---     (6,  'https://i.pinimg.com/736x/77/6a/1a/776a1a0cc732ef3648b5d9d4589b8fd2.jpg'),
---     (7,  'https://i.pinimg.com/736x/5d/9f/c3/5d9fc32d56126074219b204adc604a58.jpg'),
---     (8,  'https://i.pinimg.com/736x/f4/65/2a/f4652adfb19a4e91cf70f99fe2b84fd1.jpg'),
---     (9,  'https://i.pinimg.com/736x/d2/88/e5/d288e5d9f296e6238a2700365838c00d.jpg'),
---     (10, 'https://i.pinimg.com/736x/0d/11/11/0d1111874f45622a8b0b21760f250512.jpg'),
---     (11,  'https://i.pinimg.com/736x/5c/69/db/5c69db7b9b956abbc13abc2fcb3bbbc0.jpg'),
---     (12,  'https://i.pinimg.com/1200x/91/86/5e/91865ec3a35f437be843c7b5b3f0c4e0.jpg'),
---     (13,  'https://i.pinimg.com/736x/1d/64/37/1d6437757ae867e8404c5779e4d85b0b.jpg'),
---     (14,  'https://i.pinimg.com/vwebp/1200x/a0/50/79/a050792bb18dfdd41e4559b011fc6c08.webp'),
---     (15,  'https://i.pinimg.com/vwebp/736x/4e/fd/93/4efd93ac11262c68c8ee5a746f2fac7b.webp'),
---     (16, 'https://i.pinimg.com/vwebp/736x/dc/a9/15/dca9157fcac9ee7e3b98818a05c8cd1e.webp'),
---     (17,  'https://i.pinimg.com/736x/00/dd/66/00dd667caad13114a01e41a13f56d334.jpg'),
---     (18,  'https://i.pinimg.com/vwebp/1200x/ad/62/12/ad6212628fa7ca2851db2f90bef2bf58.webp'),
---     (19,  'https://i.pinimg.com/vwebp/1200x/70/2c/04/702c0438ddf8ec892193ec2ff3c09081.webp'),
---     (20,  'https://i.pinimg.com/vwebp/1200x/6d/aa/2c/6daa2c8d29fcc5fb326134c86f8b6039.webp'),
---     (21,  'https://i.pinimg.com/vwebp/1200x/08/5b/27/085b2747d352a7081ca98eb9cf5ec9a4.webp'),
---     (22, 'https://i.pinimg.com/736x/53/69/a4/5369a452b2e9da56bf94011d67e42ed0.jpg'),
---     (23,  'https://i.pinimg.com/1200x/92/21/51/9221515385f5b86f3e819987aa3f696e.jpg'),
---     (24,  'https://i.pinimg.com/736x/1c/f7/0a/1cf70aef777f770e163f835f8782752e.jpg'),
---     (25,  'https://i.pinimg.com/vwebp/1200x/99/23/b0/9923b042cd091b10abe5b6fcf2093bc3.webp'),
---     (26,  'https://i.pinimg.com/vwebp/1200x/8c/39/c0/8c39c0878ff77c0f57ed9a84e8ecf40f.webp'),
---     (27,  'https://i.pinimg.com/1200x/29/26/c6/2926c6a2f6b3825a440966a664768d83.jpg'),
---     (28, 'https://i.pinimg.com/1200x/e3/77/11/e37711f21f928df5016df938413f3123.jpg'),
---     (29,  'https://i.pinimg.com/736x/b0/44/77/b04477c00bb0c1ecb4f3013ef4f09d5c.jpg'),
---     (30,  'https://i.pinimg.com/1200x/7c/69/47/7c69470091e267c34990b3676d8d231a.jpg'),
---     (31,  'https://i.pinimg.com/736x/11/dc/a3/11dca3785d212aa284bbb87ff37e49e7.jpg'),
---     (32,  'https://i.pinimg.com/736x/69/c5/a7/69c5a7e539f34246925c4b25403bb281.jpg'),
---     (33,  'https://i.pinimg.com/1200x/f9/e0/02/f9e00257d5255aee0f9b1914fb9e5bbe.jpg'),
---     (34, 'https://i.pinimg.com/736x/e1/62/fb/e162fb506145a41815a936742681e279.jpg'),
---     (35,  'https://i.pinimg.com/736x/04/54/c2/0454c2e1e3aa1b43d88c9be0c9f68fcd.jpg'),
---     (36,  'https://i.pinimg.com/vwebp/1200x/87/2f/2b/872f2b51a29c0de6c1289b4b5f0ba39e.webp'),
---     (37,  'https://i.pinimg.com/736x/59/da/50/59da505167c184358b516eea8bdabd1c.jpg'),
---     (38,  'https://i.pinimg.com/1200x/5b/8e/8e/5b8e8e21719e378b8f19f9f14ce53d30.jpg'),
---     (39,  'https://i.pinimg.com/1200x/56/7f/54/567f54982d395358a4fef96c6a7d50dc.jpg'),
---     (40, 'https://i.pinimg.com/1200x/30/f7/5c/30f75cb62fdb342d2d365f7a015ec72d.jpg'),
---     (41,  'https://i.pinimg.com/1200x/0e/95/1e/0e951ec90d1518b577fb0245eb7c14c2.jpg'),
---     (42,  'https://i.pinimg.com/vwebp/1200x/ee/21/9b/ee219b70fe7133677e32eebc3c56c53e.webp'),
---     (43,  'https://i.pinimg.com/1200x/ca/a0/29/caa0298a738bfe3a3a7dc3babc301631.jpg'),
---     (44,  'https://i.pinimg.com/1200x/e2/a0/97/e2a0977c9914df1da1d0ffb18afb07b1.jpg'),
---     (45,  'https://i.pinimg.com/1200x/ae/5d/d9/ae5dd9a8bd4ef13c9e4275d96b3cc562.jpg'),
---     (46, 'https://i.pinimg.com/vwebp/736x/68/16/a1/6816a126c898b8b157fac887b8520af6.webp'),
---     (47,  'https://i.pinimg.com/736x/83/22/86/832286d170fb373d6f22ea099be00c76.jpg'),
---     (48,  'https://i.pinimg.com/736x/1f/ff/99/1fff9926f473b682a33ac3d12e52e07f.jpg'),
---     (49,  'https://i.pinimg.com/1200x/9a/a3/81/9aa381dc2f8081fc6ab5eadb99827b5e.jpg'),
---     (50,  'https://i.pinimg.com/736x/94/6f/ac/946face6b98f4359c025e89fffc6392e.jpg'),
---     (51,  'https://i.pinimg.com/736x/84/00/4d/84004d81e2feaf11d1ffacfa176ec76c.jpg'),
---     (52, 'https://i.pinimg.com/vwebp/1200x/47/be/84/47be84309ce929918fadebfd363e9619.webp'),
---     (53,  'https://i.pinimg.com/vwebp/1200x/d3/2c/a6/d32ca67be017af00b86d519a5705d54d.webp'),
---     (54,  'https://i.pinimg.com/1200x/c7/f7/4b/c7f74b8c9a946fd64a4d1d35f2115769.jpg'),
---     (55,  'https://i.pinimg.com/vwebp/1200x/8c/0d/58/8c0d58f2d82d3af4eb9904605847de24.webp'),
---     (56,  'https://i.pinimg.com/vwebp/736x/60/7e/6d/607e6de4a2c5d062de44acbce27d7733.webp'),
---     (57,  'https://i.pinimg.com/vwebp/1200x/95/68/35/9568353032fcf16a202d9256bef82f48.webp'),
---     (58, 'https://i.pinimg.com/736x/43/31/0c/43310cd053cc2e4baf646dd0cbcd88d2.jpg'),
---     (59, 'https://i.pinimg.com/1200x/1b/32/97/1b3297ece0f285d5c9175e2a73d5b072.jpg'),
---     (60, 'https://i.pinimg.com/736x/96/ff/66/96ff66d350fb57e32403a1a4c1048d23.jpg')
--- ) AS v(product_id, image)
--- ON p.product_id = v.product_id;
--- GO
-
--- SELECT product_id, product_name, image
--- FROM Product
--- ORDER BY product_id;
-
-
 USE BitesandMore;
 GO
 CREATE OR ALTER TRIGGER trg_GenerateOrderCode
@@ -1542,3 +1459,5 @@ SELECT OBJECT_ID('[dbo].[Order]') AS order_table_id;
 SELECT name
 FROM sys.triggers
 WHERE name = 'trg_GenerateOrderCode';
+
+SELECT * FROM Order_Detail;

@@ -163,4 +163,12 @@ public class Order {
         return recipientPhone;
     }
 
+    public String getFullName() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getPhoneNumber() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

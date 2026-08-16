@@ -169,7 +169,7 @@
         <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Danh sách tất cả món bánh đang kinh doanh</div>
       </div>
 
-      <a href="add-product.jsp" class="btn-add-new">
+      <a href="admin-add-product.jsp" class="btn-add-new">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         THÊM BÁNH MỚI
       </a>
@@ -199,12 +199,11 @@
                     <td>Bánh ngọt</td>
                     <td><strong style="color:var(--pink-primary);"><fmt:formatNumber value="${p.price}" pattern="#,##0"/>đ</strong></td>
                     <td style="text-align:center;">
-                      <a href="edit-product?id=${p.id != 0 ? p.id : p.productId}" class="btn-action-icon" title="Chỉnh sửa">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                      </a>
-                      <a href="delete-product?id=${p.id != 0 ? p.id : p.productId}" class="btn-action-icon delete" title="Xóa sản phẩm" onclick="return confirm('Bạn có chắc muốn xóa bánh này?');">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                      </a>
+                      <!-- Đổi href thành edit-product?id=... -->
+<a href="edit-product?id=${p.id != 0 ? p.id : p.productId}" class="btn-action-icon" title="Chỉnh sửa">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+</a>
+                    <a href="delete-product?id=${p.id != 0 ? p.id : p.productId}" class="btn-action-icon delete" title="Xóa sản phẩm" onclick="return confirm('Bạn có chắc muốn xóa bánh này?');">
                     </td>
                   </tr>
                 </c:forEach>

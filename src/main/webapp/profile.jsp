@@ -146,7 +146,6 @@
       color: var(--pink-primary);
       transform: translateY(-2px);
     }
-    /* Badge số lượng dùng chung với các trang cửa hàng/giỏ hàng */
     .ic-btn .badge {
       position: absolute;
       top: -4px;
@@ -448,6 +447,14 @@
       border-bottom: 1px solid var(--border-soft);
       color: var(--text-chocolate);
     }
+    .clickable-order-row { 
+      cursor: pointer; 
+      transition: background 0.15s ease; 
+    }
+    .clickable-order-row:hover { 
+      background: var(--pink-subtle) !important; 
+    }
+
     .status-badge {
       display: inline-block;
       padding: 4px 10px;
@@ -460,6 +467,53 @@
     .status-badge.confirmed { background: #e6fffa; color: #234e52; }
     .status-badge.completed { background: #d4edda; color: #155724; }
     .status-badge.cancelled { background: #f8d7da; color: #721c24; }
+
+    /* CSS MODAL CHI TIẾT ĐƠN HÀNG */
+    .order-modal-overlay {
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100vw; 
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4); 
+      backdrop-filter: blur(3px);
+      z-index: 10000; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+    }
+    .order-modal-box {
+      background: #fff; 
+      border-radius: var(--radius-md); 
+      width: 550px; 
+      max-width: 90%;
+      border: 1.5px solid var(--border-soft); 
+      box-shadow: var(--shadow-md); 
+      overflow: hidden;
+      animation: popIn 0.25s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .order-modal-header {
+      padding: 16px 20px; 
+      border-bottom: 1.5px solid var(--border-soft);
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background: var(--pink-subtle);
+    }
+    .btn-close-modal {
+      background: none; 
+      border: none; 
+      font-size: 24px; 
+      cursor: pointer; 
+      color: var(--text-muted); 
+      line-height: 1;
+    }
+    .btn-close-modal:hover { color: var(--pink-primary); }
+    .order-modal-body { padding: 20px; }
 
     .minimal-footer {
       border-top: 1.5px solid var(--border-soft);
@@ -488,7 +542,7 @@
 
 <div class="wire-page">
 
-  <!-- TOPBAR VỚI ICON BÁNH MÌ -->
+  <!-- TOPBAR -->
   <div class="wf-topbar">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8c0-2.2-1.8-4-4-4H10C7.8 4 6 5.8 6 8c-2.2 0-4 1.8-4 4s1.8 4 4 4h12c2.2 0 4-1.8 4-4s-1.8-4-4-4z"/><path d="M10 4v12"/><path d="M14 4v12"/></svg>
     MIỄN PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100.000VND | HOTLINE: 0766 766 999
@@ -510,14 +564,14 @@
     </nav>
 
     <div class="header-actions">
-     <a href="feedback" class="ic-btn feedback-link" title="Góp ý">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        </a>
+      <a href="feedback" class="ic-btn feedback-link" title="Góp ý">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
 
-        <a href="cart" class="ic-btn" title="Giỏ hàng">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-          <span class="badge cart-count">${not empty sessionScope.cartSize ? sessionScope.cartSize : 0}</span>
-        </a>
+      <a href="cart" class="ic-btn" title="Giỏ hàng">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="badge cart-count">${not empty sessionScope.cartSize ? sessionScope.cartSize : 0}</span>
+      </a>
 
       <a href="profile" class="ic-btn" title="Tài khoản cá nhân" style="border-color:var(--pink-primary); color:var(--pink-primary);">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -599,7 +653,7 @@
             </div>
 
             <a href="logout" class="side-link logout">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d32f2f" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d32f2f" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
               Đăng xuất
             </a>
           </div>
@@ -689,8 +743,8 @@
                     </thead>
                     <tbody>
                       <c:forEach items="${myOrders}" var="o">
-                        <tr>
-                          <td><strong>#BM${o.id}</strong></td>
+                        <tr class="clickable-order-row" onclick="viewOrderDetail('${o.id}')" title="Bấm để xem chi tiết đơn này">
+                          <td><strong style="color:var(--pink-primary); text-decoration:underline;">#BM${o.id}</strong></td>
                           <td><fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
                           <td>${o.address}</td>
                           <td><strong><fmt:formatNumber value="${o.totalPrice}" pattern="#,##0"/>đ</strong></td>
@@ -736,6 +790,37 @@
 
     </form>
   </main>
+
+  <!-- POPUP CHI TIẾT ĐƠN HÀNG (MODAL) -->
+  <div id="orderDetailModal" class="order-modal-overlay" style="display:none;">
+    <div class="order-modal-box">
+      <div class="order-modal-header">
+        <h3 id="modalOrderCode" style="margin:0; font-size:16px; font-weight:800; color:var(--pink-primary);">CHI TIẾT ĐƠN HÀNG</h3>
+        <button type="button" onclick="closeOrderModal()" class="btn-close-modal">&times;</button>
+      </div>
+      
+      <div class="order-modal-body">
+        <!-- Bảng danh sách các món bánh trong đơn -->
+        <table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;">
+          <thead>
+            <tr style="background:var(--pink-subtle); border-bottom:1.5px solid var(--border-soft); text-align:left;">
+              <th style="padding:10px;">Món Bánh</th>
+              <th style="padding:10px; text-align:center;">Số Lượng</th>
+              <th style="padding:10px; text-align:right;">Đơn Giá</th>
+              <th style="padding:10px; text-align:right;">Tạm Tính</th>
+            </tr>
+          </thead>
+          <tbody id="modalItemsBody">
+            <!-- Dữ liệu JavaScript sẽ render vào đây -->
+          </tbody>
+        </table>
+
+        <div style="margin-top:16px; text-align:right; font-size:14px; font-weight:bold; border-top:1px dashed var(--border-soft); padding-top:12px;">
+          TỔNG TIỀN: <span id="modalTotalPrice" style="color:var(--pink-primary); font-size:17px; margin-left:8px;">0đ</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer class="minimal-footer">
@@ -838,6 +923,53 @@ function switchProfileTab(tabId, element) {
   element.classList.add('active');
 }
 
+// HÀM XEM CHI TIẾT ĐƠN HÀNG (POPUP MODAL)
+function viewOrderDetail(orderId) {
+  document.getElementById('modalOrderCode').innerText = "CHI TIẾT ĐƠN HÀNG #BM" + orderId;
+  var tbody = document.getElementById('modalItemsBody');
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px;">Đang tải chi tiết món bánh...</td></tr>';
+  document.getElementById('orderDetailModal').style.display = 'flex';
+
+  // SỬA THÀNH order-detail CHO KHỚP VỚI SERVLET
+  fetch('order-detail?orderId=' + orderId)
+    .then(res => {
+      if (!res.ok) throw new Error("HTTP error " + res.status);
+      return res.json();
+    })
+    .then(data => {
+      tbody.innerHTML = '';
+      if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--text-muted);">Không tìm thấy món bánh nào trong đơn hàng này.</td></tr>';
+        document.getElementById('modalTotalPrice').innerText = '0đ';
+        return;
+      }
+      var total = 0;
+      data.forEach(item => {
+        var price = item.price || 0;
+        var qty = item.quantity || 0;
+        var subtotal = price * qty;
+        total += subtotal;
+        tbody.innerHTML += `
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px; font-weight:600;">\${item.productName || 'Bánh tươi'}</td>
+            <td style="padding:10px; text-align:center;">\${qty}</td>
+            <td style="padding:10px; text-align:right;">\${price.toLocaleString('vi-VN')}đ</td>
+            <td style="padding:10px; text-align:right; font-weight:bold; color:var(--pink-primary);">\${subtotal.toLocaleString('vi-VN')}đ</td>
+          </tr>
+        `;
+      });
+      document.getElementById('modalTotalPrice').innerText = total.toLocaleString('vi-VN') + 'đ';
+    })
+    .catch(err => {
+      console.error(err);
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red; padding:15px;">Lỗi khi tải chi tiết đơn hàng!</td></tr>';
+    });
+}
+
+function closeOrderModal() {
+  document.getElementById('orderDetailModal').style.display = 'none';
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   var btnToggle = document.getElementById('btn-toggle-edit');
   var btnCancel = document.getElementById('btn-cancel-edit');
@@ -913,7 +1045,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (citis && wards) {
-    // Chỉ phục vụ nội thành Đà Nẵng (mã tỉnh/thành của API là 48).
     function loadDaNangWards() {
       wards.length = 1;
       axios.get('https://esgoo.net/api-tinhthanh/2/48.htm')
@@ -937,6 +1068,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
-
 </body>
 </html>

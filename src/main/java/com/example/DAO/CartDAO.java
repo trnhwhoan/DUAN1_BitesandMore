@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Model.Cart;
+import com.example.Model.Order;
 import com.example.Util.DBContext;
 
 public class CartDAO {
@@ -96,5 +97,15 @@ public class CartDAO {
         }
 
         return false;
+    }
+
+    public Order getProduct() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getProduct'");
+    }
+
+    public int getQuantity() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQuantity'");
     }
 }

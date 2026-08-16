@@ -90,6 +90,19 @@
     .form-control:focus { border-color: var(--pink-primary); }
     textarea.form-control { min-height: 100px; resize: vertical; }
 
+    .category-radio-label {
+      display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+      border: 1.5px solid var(--border-soft); border-radius: var(--radius-sm);
+      background: #fff; cursor: pointer; transition: all 0.2s;
+    }
+    .category-radio-label:hover {
+      border-color: var(--pink-primary);
+      background: var(--pink-subtle);
+    }
+    .category-radio-label input[type="radio"]:checked + .category-icon + span {
+      color: var(--pink-primary);
+    }
+
     .btn-group { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
     .btn-submit {
       background: var(--pink-primary); color: #fff; border: none;
@@ -124,7 +137,7 @@
     <div class="admin-topbar">
       <div>
         <div style="font-size:18px; font-weight:900; text-transform:uppercase;">
-          CHỈNH SỬA SẢN PHẨM #${product.id}
+          CHỈNH SỬA SẢN PHẨM #${product.id != 0 ? product.id : product.productId}
         </div>
         <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Cập nhật thông tin chi tiết món bánh</div>
       </div>
@@ -134,24 +147,57 @@
     <div class="content-box-card">
       <form action="edit-product" method="POST">
         <!-- ID sản phẩm ẩn -->
-        <input type="hidden" name="productId" value="${product.id}">
+        <input type="hidden" name="productId" value="${product.id != 0 ? product.id : product.productId}">
 
         <div class="form-grid">
           <!-- Tên món bánh -->
           <div class="form-group full-width">
             <label class="form-label">Tên món bánh *</label>
-            <input type="text" name="productName" value="${product.productName}" class="form-control" required>
+            <input type="text" name="productName" value="${product.productName != null ? product.productName : product.name}" class="form-control" required>
           </div>
 
-          <!-- Danh mục -->
-          <div class="form-group">
-            <label class="form-label">Danh mục *</label>
-            <select name="categoryId" class="form-control" required>
-              <option value="1" ${product.categoryId == 1 ? 'selected' : ''}>Bánh Ngọt</option>
-              <option value="2" ${product.categoryId == 2 ? 'selected' : ''}>Bánh Mặn</option>
-              <option value="3" ${product.categoryId == 3 ? 'selected' : ''}>Bánh Kem</option>
-              <option value="4" ${product.categoryId == 4 ? 'selected' : ''}>Bánh Mì Tươi</option>
-            </select>
+          <!-- DANH MỤC DẠNG ICON THEO YÊU CẦU -->
+          <div class="form-group full-width">
+            <label class="form-label">Danh mục sản phẩm *</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 6px;">
+              
+              <label class="category-radio-label">
+                <input type="radio" name="categoryId" value="4" ${product.categoryId == 4 ? 'checked' : ''} style="accent-color: var(--pink-primary); width: 16px; height: 16px;" required>
+                <span class="category-icon" style="font-size: 18px;">🥖</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-chocolate);">Bánh mì (Bread)</span>
+              </label>
+
+              <label class="category-radio-label">
+                <input type="radio" name="categoryId" value="3" ${product.categoryId == 3 ? 'checked' : ''} style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span class="category-icon" style="font-size: 18px;">🍰</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-chocolate);">Bánh kem (Cakes)</span>
+              </label>
+
+              <label class="category-radio-label">
+                <input type="radio" name="categoryId" value="1" ${product.categoryId == 1 ? 'checked' : ''} style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span class="category-icon" style="font-size: 18px;">🥐</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-chocolate);">Ngọt Bơ &amp; Ngàn Lớp</span>
+              </label>
+
+              <label class="category-radio-label">
+                <input type="radio" name="categoryId" value="5" ${product.categoryId == 5 ? 'checked' : ''} style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span class="category-icon" style="font-size: 18px;">🍪</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-chocolate);">Bánh quy (Cookie)</span>
+              </label>
+
+              <label class="category-radio-label">
+                <input type="radio" name="categoryId" value="6" ${product.categoryId == 6 ? 'checked' : ''} style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span class="category-icon" style="font-size: 18px;">🍩</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-chocolate);">Bánh Donuts</span>
+              </label>
+
+              <label class="category-radio-label">
+                <input type="radio" name="categoryId" value="7" ${product.categoryId == 7 ? 'checked' : ''} style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span class="category-icon" style="font-size: 18px;">🧁</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-chocolate);">Bánh Cupcake</span>
+              </label>
+
+            </div>
           </div>
 
           <!-- Giá bán -->
@@ -167,7 +213,7 @@
           </div>
 
           <!-- Trạng thái kinh doanh -->
-          <div class="form-group">
+          <div class="form-group full-width">
             <label class="form-label">Trạng thái kinh doanh *</label>
             <select name="status" class="form-control">
               <option value="Active" ${product.status == 'Active' ? 'selected' : ''}>Đang bán (Active)</option>
@@ -178,7 +224,7 @@
           <!-- Đường dẫn hình ảnh -->
           <div class="form-group full-width">
             <label class="form-label">Đường dẫn hình ảnh (URL/Path) *</label>
-            <input type="text" name="imageUrl" value="${product.image}" class="form-control" required>
+            <input type="text" name="imageUrl" value="${product.imageUrl != null ? product.imageUrl : product.image}" class="form-control" required>
           </div>
 
           <!-- Mô tả sản phẩm -->

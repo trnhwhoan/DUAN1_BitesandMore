@@ -171,4 +171,19 @@ public class Order {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public String getPaymentMethod() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPaymentMethod'");
+    }
+
+    public String getNote() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNote'");
+    }
+
+    public BigDecimal getPrice() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPrice'");
+    }
+
 }

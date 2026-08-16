@@ -116,6 +116,14 @@
       border-top: 1px solid var(--border-soft); background: #fff;
       padding: 20px 0; text-align: center; font-size: 13px; color: var(--text-muted);
     }
+
+    .status-badge.pending { background: #fff8e6; color: #b7791f; border: 1px solid #fce8b3; }
+.status-badge.confirmed { background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; }
+.status-badge.processing { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.status-badge.shipping { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+.status-badge.delivered { background: #e6fffa; color: #0f766e; border: 1px solid #99f6e4; }
+.status-badge.completed { background: #e6ffed; color: #22543d; border: 1px solid #b7ebc5; }
+.status-badge.cancelled { background: #ffe6e6; color: #9b2c2c; border: 1px solid #feb2b2; }
   </style>
 </head>
 <body>
@@ -192,43 +200,63 @@
           <tbody>
             <c:choose>
               <c:when test="${not empty orderList}">
-                <c:forEach items="${orderList}" var="o">
-                  <tr>
-                    <td>
-                      <!-- Click vào mã đơn để xem chi tiết -->
-                      <strong style="color:var(--pink-primary); cursor:pointer; text-decoration:underline;" 
-                              onclick="viewAdminOrderDetail('${o.orderId != null ? o.orderId : o.id}')"
-                              title="Bấm để xem danh sách món bánh">
-                        #BM${o.orderId != null ? o.orderId : o.id}
-                      </strong>
-                    </td>
-                    <td><strong>${o.recipientName != null ? o.recipientName : (o.fullName != null ? o.fullName : o.customerName)}</strong></td>
-                    <td>${o.recipientPhone != null ? o.recipientPhone : (o.phoneNumber != null ? o.phoneNumber : o.phone)}</td>
-                    <td>${o.shippingAddress != null ? o.shippingAddress : o.address}</td>
-                    <td><fmt:formatDate value="${o.orderDate != null ? o.orderDate : o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
-                    <td><strong style="color:var(--text-chocolate);"><fmt:formatNumber value="${o.finalAmount != null ? o.finalAmount : (o.totalAmount != null ? o.totalAmount : o.totalPrice)}" pattern="#,##0"/>đ</strong></td>
-                    <td>
-                      <c:choose>
-                        <c:when test="${o.status == 'Confirmed'}"><span class="status-badge confirmed"><span class="status-dot"></span>Đã xác nhận</span></c:when>
-                        <c:when test="${o.status == 'Completed'}"><span class="status-badge completed"><span class="status-dot"></span>Hoàn thành</span></c:when>
-                        <c:when test="${o.status == 'Cancelled'}"><span class="status-badge cancelled"><span class="status-dot"></span>Đã hủy</span></c:when>
-                        <c:otherwise><span class="status-badge pending"><span class="status-dot"></span>Chờ xử lý</span></c:otherwise>
-                      </c:choose>
-                    </td>
-                    <td style="text-align:center;">
-                      <form action="update-order-status" method="POST" style="display:inline-flex; align-items:center; gap:8px;">
-                        <input type="hidden" name="orderId" value="${o.orderId != null ? o.orderId : o.id}">
-                        <select name="status" class="select-status-edit">
-                          <option value="Pending" ${o.status == 'Pending' ? 'selected' : ''}>Chờ xử lý</option>
-                          <option value="Confirmed" ${o.status == 'Confirmed' ? 'selected' : ''}>Đã xác nhận</option>
-                          <option value="Completed" ${o.status == 'Completed' ? 'selected' : ''}>Hoàn thành</option>
-                          <option value="Cancelled" ${o.status == 'Cancelled' ? 'selected' : ''}>Đã hủy</option>
-                        </select>
-                        <button type="submit" class="btn-save-order">LƯU</button>
-                      </form>
-                    </td>
-                  </tr>
-                </c:forEach>
+               <c:forEach items="${orderList}" var="o">
+  <tr>
+    <!-- 1. Mã đơn -->
+    <td>
+      <strong style="color:var(--pink-primary); cursor:pointer; text-decoration:underline;" 
+              onclick="viewAdminOrderDetail('${o.orderId != null ? o.orderId : o.id}')"
+              title="Bấm để xem danh sách món bánh">
+        #BM${o.orderId != null ? o.orderId : o.id}
+      </strong>
+    </td>
+
+    <!-- 2. Khách hàng -->
+    <td><strong>${o.recipientName != null ? o.recipientName : (o.fullName != null ? o.fullName : o.customerName)}</strong></td>
+
+    <!-- 3. Số điện thoại -->
+    <td>${o.recipientPhone != null ? o.recipientPhone : (o.phoneNumber != null ? o.phoneNumber : o.phone)}</td>
+
+    <!-- 4. Địa chỉ giao -->
+    <td>${o.shippingAddress != null ? o.shippingAddress : o.address}</td>
+
+    <!-- 5. Ngày đặt -->
+    <td><fmt:formatDate value="${o.orderDate != null ? o.orderDate : o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
+
+    <!-- 6. Tổng tiền -->
+    <td><strong style="color:var(--text-chocolate);"><fmt:formatNumber value="${o.finalAmount != null ? o.finalAmount : (o.totalAmount != null ? o.totalAmount : o.totalPrice)}" pattern="#,##0"/>đ</strong></td>
+
+    <!-- 7. Huy hiệu trạng thái -->
+    <td>
+      <c:choose>
+        <c:when test="${o.status == 'Confirmed'}"><span class="status-badge confirmed"><span class="status-dot"></span>Đã xác nhận</span></c:when>
+        <c:when test="${o.status == 'Processing'}"><span class="status-badge processing"><span class="status-dot"></span>Đang làm bánh</span></c:when>
+        <c:when test="${o.status == 'Shipping'}"><span class="status-badge shipping"><span class="status-dot"></span>Đang giao hàng</span></c:when>
+        <c:when test="${o.status == 'Delivered'}"><span class="status-badge delivered"><span class="status-dot"></span>Đã giao</span></c:when>
+        <c:when test="${o.status == 'Completed'}"><span class="status-badge completed"><span class="status-dot"></span>Hoàn thành</span></c:when>
+        <c:when test="${o.status == 'Cancelled'}"><span class="status-badge cancelled"><span class="status-dot"></span>Đã hủy</span></c:when>
+        <c:otherwise><span class="status-badge pending"><span class="status-dot"></span>Chờ xử lý</span></c:otherwise>
+      </c:choose>
+    </td>
+
+    <!-- 8. Form cập nhật trạng thái -->
+    <td style="text-align:center;">
+      <form action="update-order-status" method="POST" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; margin:0;">
+        <input type="hidden" name="orderId" value="${o.orderId != null ? o.orderId : o.id}">
+        <select name="status" class="select-status-edit">
+          <option value="Pending" ${o.status == 'Pending' ? 'selected' : ''}>Chờ xử lý</option>
+          <option value="Confirmed" ${o.status == 'Confirmed' ? 'selected' : ''}>Đã xác nhận</option>
+          <option value="Processing" ${o.status == 'Processing' ? 'selected' : ''}>Đang làm bánh</option>
+          <option value="Shipping" ${o.status == 'Shipping' ? 'selected' : ''}>Đang giao hàng</option>
+          <option value="Delivered" ${o.status == 'Delivered' ? 'selected' : ''}>Đã giao</option>
+          <option value="Completed" ${o.status == 'Completed' ? 'selected' : ''}>Hoàn thành</option>
+          <option value="Cancelled" ${o.status == 'Cancelled' ? 'selected' : ''}>Đã hủy</option>
+        </select>
+        <button type="submit" class="btn-save-order">LƯU</button>
+      </form>
+    </td>
+  </tr>
+</c:forEach>
               </c:when>
 
               <c:otherwise>

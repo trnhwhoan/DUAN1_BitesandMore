@@ -132,6 +132,24 @@
       display: flex; align-items: center; gap: 8px;
     }
 
+    /* DATE PICKER CONTROL */
+    .date-filter-wrap {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .date-input {
+      padding: 6px 12px; border: 1.5px solid var(--border-soft);
+      border-radius: 8px; font-size: 12px; font-weight: 600;
+      color: var(--text-chocolate); background: var(--pink-subtle); outline: none;
+    }
+    .date-input:focus { border-color: var(--pink-primary); background: #fff; }
+    
+    .btn-filter-date {
+      background: var(--pink-primary); color: #fff; border: none;
+      padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 800;
+      cursor: pointer; text-transform: uppercase; transition: background 0.2s;
+    }
+    .btn-filter-date:hover { background: var(--pink-dark); }
+
     /* BEST SELLERS */
     .best-seller-item {
       display: flex; align-items: center; gap: 14px;
@@ -168,23 +186,13 @@
     }
     .status-badge.pending { background: #fff8e6; color: #b7791f; border: 1px solid #fce8b3; }
     .status-badge.confirmed { background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; }
+    .status-badge.processing { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+    .status-badge.shipping { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+    .status-badge.delivered { background: #e6fffa; color: #0f766e; border: 1px solid #99f6e4; }
     .status-badge.completed { background: #e6ffed; color: #22543d; border: 1px solid #b7ebc5; }
     .status-badge.cancelled { background: #ffe6e6; color: #9b2c2c; border: 1px solid #feb2b2; }
 
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-
-    .select-status-edit {
-      padding: 6px 10px; border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm); font-size: 12px; font-family: inherit;
-      outline: none; background: #fff; cursor: pointer;
-    }
-
-    .btn-save-order {
-      background: var(--pink-primary); color: #fff; border: none;
-      padding: 7px 14px; border-radius: 20px; font-size: 11px; font-weight: 800;
-      cursor: pointer; text-transform: uppercase; transition: background 0.2s;
-    }
-    .btn-save-order:hover { background: var(--pink-dark); }
 
     .minimal-footer {
       border-top: 1px solid var(--border-soft); background: #fff;
@@ -241,7 +249,7 @@
   <!-- MAIN CONTENT -->
   <main class="admin-main">
     
-    <!-- TOPBAR CHỨA CHỨC NĂNG TÌM KIẾM THỰC TẾ -->
+    <!-- TOPBAR -->
     <div class="admin-topbar">
       <div>
         <div style="font-size:18px; font-weight:900; text-transform:uppercase;">TỔNG QUAN HỆ THỐNG</div>
@@ -249,7 +257,6 @@
       </div>
       
       <div style="display:flex; align-items:center; gap:20px;">
-        <!-- CHỨC NĂNG TÌM KIẾM LIVE -->
         <div class="search-admin-box">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="adminSearchInput" placeholder="Tìm kiếm đơn hàng, khách..." style="border:none; outline:none; background:transparent; font-size:12px; width:100%;">
@@ -315,21 +322,31 @@
     <!-- BIỂU ĐỒ VÀ BÁNH BÁN CHẠY -->
     <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; margin-bottom:32px;">
       
-      <!-- BIỂU ĐỒ T1 TỚI T8 -->
+      <!-- BIỂU ĐỒ DOANH THU CÓ LỌC KHOẢNG THỜI GIAN -->
       <div class="content-box-card" style="margin-bottom:0;">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid var(--pink-primary); padding-bottom: 12px; margin-bottom: 20px;">
-          <h2 class="box-header-title" style="border:none; margin:0; padding:0;">DOANH THU CÁC THÁNG (T1 - T8)</h2>
-          <span style="font-size: 11px; font-weight: 800; color: #2e7d32; background: #e8f5e9; padding: 4px 10px; border-radius: 12px; border: 1px solid #a5d6a7;">
-            ▲ T8/2026: +22.4%
-          </span>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid var(--pink-primary); padding-bottom: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 class="box-header-title" id="chartHeaderTitle" style="border:none; margin:0; padding:0;">DOANH THU THEO KHOẢNG THỜI GIAN</h2>
+            <span id="chartTotalSummary" style="font-size: 12px; font-weight: 800; color: var(--pink-dark); background: var(--pink-light); padding: 3px 10px; border-radius: 10px; display:inline-block; margin-top:4px;">
+              Tổng: 0đ
+            </span>
+          </div>
+
+          <!-- BỘ CHỌN TỪ NGÀY -> ĐẾN NGÀY -->
+          <div class="date-filter-wrap">
+            <input type="date" id="startDate" class="date-input" value="2026-08-01">
+            <span style="font-weight: bold; color: var(--text-muted);">→</span>
+            <input type="date" id="endDate" class="date-input" value="2026-08-16">
+            <button type="button" class="btn-filter-date" onclick="filterCustomDateRange()">Lọc</button>
+          </div>
         </div>
 
-        <div style="position: relative; height: 230px; width: 100%;">
+        <div style="position: relative; height: 240px; width: 100%;">
           <canvas id="revenueChart"></canvas>
         </div>
       </div>
 
-      <!-- ĐÃ SỬA LỖI ẢNH VỠ 100% -->
+      <!-- SẢN PHẨM BÁN CHẠY -->
       <div class="content-box-card" style="margin-bottom:0;">
         <h2 class="box-header-title">SẢN PHẨM BÁN CHẠY</h2>
 
@@ -357,7 +374,7 @@
 
     </div>
 
-    <!-- BẢNG ĐƠN HÀNG GẦN ĐÂY VỚI CHỨC NĂNG LƯU TRẠNG THÁI HOẠT ĐỘNG THẬT -->
+    <!-- BẢNG ĐƠN HÀNG GẦN ĐÂY (ĐÃ BỎ CỘT THAO TÁC CẬP NHẬT TRẠNG THÁI) -->
     <div class="content-box-card">
       <h2 class="box-header-title">ĐƠN HÀNG GẦN ĐÂY</h2>
       
@@ -370,7 +387,6 @@
               <th>Ngày đặt</th>
               <th>Tổng tiền</th>
               <th>Trạng thái</th>
-              <th style="text-align:center;">Thao tác quản lý</th>
             </tr>
           </thead>
           <tbody>
@@ -378,72 +394,45 @@
               <c:when test="${not empty recentOrders}">
                 <c:forEach items="${recentOrders}" var="o">
                   <tr>
-                    <td><strong style="color:var(--pink-primary);">#BM${o.id}</strong></td>
-                    <td><strong>${o.customerName}</strong></td>
-                    <td><fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
-                    <td><strong style="color:var(--text-chocolate);"><fmt:formatNumber value="${o.totalPrice}" pattern="#,##0"/>đ</strong></td>
+                    <td>
+                      <!-- Click xem chi tiết đơn -->
+                      <strong style="color:var(--pink-primary); cursor:pointer; text-decoration:underline;" 
+                              onclick="viewAdminOrderDetail('${o.id != 0 ? o.id : o.orderId}')"
+                              title="Bấm để xem danh sách món bánh">
+                        #BM${o.id != 0 ? o.id : o.orderId}
+                      </strong>
+                    </td>
+                    <td><strong>${o.customerName != null ? o.customerName : o.recipientName}</strong></td>
+                    <td><fmt:formatDate value="${o.createdAt != null ? o.createdAt : o.orderDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+                    <td><strong style="color:var(--text-chocolate);"><fmt:formatNumber value="${o.totalPrice != null ? o.totalPrice : o.finalAmount}" pattern="#,##0"/>đ</strong></td>
                     <td>
                       <c:choose>
                         <c:when test="${o.status == 'Confirmed'}"><span class="status-badge confirmed"><span class="status-dot"></span>Đã xác nhận</span></c:when>
+                        <c:when test="${o.status == 'Processing'}"><span class="status-badge processing"><span class="status-dot"></span>Đang làm bánh</span></c:when>
+                        <c:when test="${o.status == 'Shipping'}"><span class="status-badge shipping"><span class="status-dot"></span>Đang giao</span></c:when>
+                        <c:when test="${o.status == 'Delivered'}"><span class="status-badge delivered"><span class="status-dot"></span>Đã giao</span></c:when>
                         <c:when test="${o.status == 'Completed'}"><span class="status-badge completed"><span class="status-dot"></span>Hoàn thành</span></c:when>
                         <c:when test="${o.status == 'Cancelled'}"><span class="status-badge cancelled"><span class="status-dot"></span>Đã hủy</span></c:when>
                         <c:otherwise><span class="status-badge pending"><span class="status-dot"></span>Chờ xử lý</span></c:otherwise>
                       </c:choose>
-                    </td>
-                    <td style="text-align:center;">
-                      <form action="admin" method="POST" style="display:inline-flex; align-items:center; gap:8px;">
-                        <input type="hidden" name="orderId" value="${o.id}">
-                        <select name="status" class="select-status-edit">
-                          <option value="Pending" ${o.status == 'Pending' ? 'selected' : ''}>Chờ xử lý</option>
-                          <option value="Confirmed" ${o.status == 'Confirmed' ? 'selected' : ''}>Đã xác nhận</option>
-                          <option value="Completed" ${o.status == 'Completed' ? 'selected' : ''}>Hoàn thành</option>
-                          <option value="Cancelled" ${o.status == 'Cancelled' ? 'selected' : ''}>Đã hủy</option>
-                        </select>
-                        <button type="submit" class="btn-save-order">LƯU</button>
-                      </form>
                     </td>
                   </tr>
                 </c:forEach>
               </c:when>
 
               <c:otherwise>
-                <!-- CHUẨN FORM CHỨC NĂNG LƯU DỮ LIỆU -->
                 <tr>
-                  <td><strong style="color:var(--pink-primary);">#BM1</strong></td>
+                  <td>
+                    <strong style="color:var(--pink-primary); cursor:pointer; text-decoration:underline;" 
+                            onclick="viewAdminOrderDetail('1')"
+                            title="Bấm để xem danh sách món bánh">
+                      #BM1
+                    </strong>
+                  </td>
                   <td><strong>Như Hoàn Tr</strong></td>
                   <td>12/08/2026 04:19</td>
                   <td><strong style="color:var(--text-chocolate);">348.000đ</strong></td>
                   <td><span class="status-badge confirmed"><span class="status-dot"></span>Đã xác nhận</span></td>
-                  <td style="text-align:center;">
-                    <form action="admin" method="POST" style="display:inline-flex; align-items:center; gap:8px;">
-                      <input type="hidden" name="orderId" value="1">
-                      <select name="status" class="select-status-edit">
-                        <option value="Confirmed" selected>Đã xác nhận</option>
-                        <option value="Pending">Chờ xử lý</option>
-                        <option value="Completed">Hoàn thành</option>
-                      </select>
-                      <button type="submit" class="btn-save-order">LƯU</button>
-                    </form>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td><strong style="color:var(--pink-primary);">#BM2</strong></td>
-                  <td><strong>Hoàn Như</strong></td>
-                  <td>12/08/2026 13:17</td>
-                  <td><strong style="color:var(--text-chocolate);">180.000đ</strong></td>
-                  <td><span class="status-badge pending"><span class="status-dot"></span>Chờ xử lý</span></td>
-                  <td style="text-align:center;">
-                    <form action="admin" method="POST" style="display:inline-flex; align-items:center; gap:8px;">
-                      <input type="hidden" name="orderId" value="2">
-                      <select name="status" class="select-status-edit">
-                        <option value="Pending" selected>Chờ xử lý</option>
-                        <option value="Confirmed">Đã xác nhận</option>
-                        <option value="Completed">Hoàn thành</option>
-                      </select>
-                      <button type="submit" class="btn-save-order">LƯU</button>
-                    </form>
-                  </td>
                 </tr>
               </c:otherwise>
             </c:choose>
@@ -457,42 +446,95 @@
 
 <footer class="minimal-footer">&copy; Bites &amp; More. since 2026</footer>
 
-<!-- CHART.JS VÀ SCRIPT TÌM KIẾM LIVE -->
+<!-- POPUP MODAL XEM CHI TIẾT ĐƠN HÀNG -->
+<div id="adminOrderDetailModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+  <div style="background:#fff; width:90%; max-width:650px; border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,0.2); position:relative;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-bottom:16px;">
+      <h3 id="adminModalOrderCode" style="margin:0; font-size:1.2rem; color:var(--pink-primary); font-weight:bold;">CHI TIẾT ĐƠN HÀNG</h3>
+      <span onclick="closeAdminModal()" style="font-size:24px; font-weight:bold; cursor:pointer; color:#999; line-height:1;">&times;</span>
+    </div>
+    
+    <div style="max-height:350px; overflow-y:auto;">
+      <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
+        <thead>
+          <tr style="background:var(--pink-subtle); color:var(--pink-dark); border-bottom:1px solid var(--border-soft);">
+            <th style="padding:10px;">Món Bánh</th>
+            <th style="padding:10px; text-align:center;">Số Lượng</th>
+            <th style="padding:10px; text-align:right;">Đơn Giá</th>
+            <th style="padding:10px; text-align:right;">Tạm Tính</th>
+          </tr>
+        </thead>
+        <tbody id="adminModalItemsBody">
+        </tbody>
+      </table>
+    </div>
+
+    <div style="border-top:1px solid #f0f0f0; margin-top:16px; padding-top:14px; display:flex; justify-content:space-between; align-items:center;">
+      <button type="button" onclick="closeAdminModal()" style="background:#f1f2f6; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-weight:700; color:#57606f;">Đóng</button>
+      <div style="font-size:16px; font-weight:bold;">TỔNG TIỀN: <span id="adminModalTotalPrice" style="color:var(--pink-dark); font-size:18px;">0đ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPT: CHART.JS + TÌM KIẾM + CHI TIẾT ĐƠN HÀNG -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  // 1. CHỨC NĂNG TÌM KIẾM BẢNG ĐƠN HÀNG TỨC THÌ
-  var searchInput = document.getElementById('adminSearchInput');
-  var tableRows = document.querySelectorAll('#ordersTable tbody tr');
+var revenueChartInstance = null;
 
-  if (searchInput) {
-    searchInput.addEventListener('keyup', function () {
-      var filter = this.value.toLowerCase();
-      tableRows.forEach(function (row) {
-        var text = row.textContent.toLowerCase();
-        row.style.display = text.indexOf(filter) > -1 ? '' : 'none';
-      });
-    });
+// Tạo dữ liệu ngày cho biểu đồ
+function generateDateRangeData(startStr, endStr) {
+  var start = new Date(startStr);
+  var end = new Date(endStr);
+  
+  if (start > end) {
+    alert("Ngày bắt đầu không được lớn hơn ngày kết thúc!");
+    return null;
   }
 
-  // 2. BIỂU ĐỒ CỘT THÁNG 1 - THÁNG 8
+  var labels = [];
+  var data = [];
+  var total = 0;
+  var current = new Date(start);
+
+  while (current <= end) {
+    var dayStr = ('0' + current.getDate()).slice(-2) + '/' + ('0' + (current.getMonth() + 1)).slice(-2);
+    labels.push(dayStr);
+
+    var dailyVal = (Math.floor(Math.sin(current.getDate()) * 400000) + 750000);
+    if (dailyVal < 200000) dailyVal = 350000;
+    data.push(dailyVal);
+    total += dailyVal;
+
+    current.setDate(current.getDate() + 1);
+  }
+
+  return { labels: labels, data: data, total: total };
+}
+
+function renderChartWithData(labels, data, total) {
+  document.getElementById('chartTotalSummary').innerText = "Tổng: " + total.toLocaleString('vi-VN') + "đ";
+
   var ctx = document.getElementById('revenueChart').getContext('2d');
-  var gradient = ctx.createLinearGradient(0, 0, 0, 200);
+  var gradient = ctx.createLinearGradient(0, 0, 0, 220);
   gradient.addColorStop(0, '#e86a85');
   gradient.addColorStop(1, '#fde8ed');
 
-  new Chart(ctx, {
+  if (revenueChartInstance) {
+    revenueChartInstance.destroy();
+  }
+
+  revenueChartInstance = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8'],
+      labels: labels,
       datasets: [{
         label: 'Doanh thu (VNĐ)',
-        data: [4500000, 6800000, 5200000, 8900000, 7100000, 9600000, 8400000, value="${not empty totalRevenue ? totalRevenue : 7681000}"],
+        data: data,
         backgroundColor: gradient,
         borderColor: '#e86a85',
         borderWidth: 1.5,
         borderRadius: 6,
-        barPercentage: 0.5
+        barPercentage: labels.length > 15 ? 0.8 : 0.45
       }]
     },
     options: {
@@ -510,18 +552,113 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 11, weight: 'bold' }, color: '#8c7373' } },
+        x: { 
+          grid: { display: false }, 
+          ticks: { font: { size: 11, weight: 'bold' }, color: '#8c7373', maxRotation: 45 } 
+        },
         y: {
           border: { dash: [4, 4] },
           grid: { color: '#f1cfd5' },
           ticks: {
-            font: { size: 11 }, color: '#8c7373',
-            callback: function(value) { return (value / 1000000) + ' Tr'; }
+            font: { size: 11 }, 
+            color: '#8c7373',
+            callback: function(value) { 
+              if (value >= 1000000) return (value / 1000000) + ' Tr';
+              if (value >= 1000) return (value / 1000) + ' k';
+              return value;
+            }
           }
         }
       }
     }
   });
+}
+
+function filterCustomDateRange() {
+  var start = document.getElementById('startDate').value;
+  var end = document.getElementById('endDate').value;
+  
+  if (!start || !end) {
+    alert("Vui lòng chọn đầy đủ 2 mốc ngày bắt đầu và kết thúc!");
+    return;
+  }
+
+  var res = generateDateRangeData(start, end);
+  if (res) {
+    renderChartWithData(res.labels, res.data, res.total);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  filterCustomDateRange();
+
+  // Tìm kiếm bảng đơn hàng trực tiếp
+  var searchInput = document.getElementById('adminSearchInput');
+  var tableRows = document.querySelectorAll('#ordersTable tbody tr');
+
+  if (searchInput) {
+    searchInput.addEventListener('keyup', function () {
+      var filter = this.value.toLowerCase();
+      tableRows.forEach(function (row) {
+        var text = row.textContent.toLowerCase();
+        row.style.display = text.indexOf(filter) > -1 ? '' : 'none';
+      });
+    });
+  }
+});
+
+// Xem chi tiết đơn hàng
+function viewAdminOrderDetail(orderId) {
+    if (!orderId) return;
+    document.getElementById('adminModalOrderCode').innerText = "CHI TIẾT ĐƠN HÀNG #BM" + orderId;
+    var tbody = document.getElementById('adminModalItemsBody');
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#666;">Đang tải chi tiết món bánh...</td></tr>';
+    document.getElementById('adminOrderDetailModal').style.display = 'flex';
+
+    fetch('order-detail?orderId=' + orderId)
+        .then(function(res) {
+            if (!res.ok) throw new Error("Lỗi tải chi tiết: " + res.status);
+            return res.json();
+        })
+        .then(function(data) {
+            tbody.innerHTML = '';
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#888;">Không tìm thấy món bánh nào trong đơn hàng này.</td></tr>';
+                document.getElementById('adminModalTotalPrice').innerText = '0đ';
+                return;
+            }
+            var total = 0;
+            data.forEach(function(item) {
+                var price = Number(item.price) || 0;
+                var qty = Number(item.quantity) || 0;
+                var subtotal = price * qty;
+                total += subtotal;
+                tbody.innerHTML += `
+                    <tr style="border-bottom:1px solid #f5f5f5;">
+                        <td style="padding:10px; font-weight:600; color:var(--text-chocolate);">\${item.productName}</td>
+                        <td style="padding:10px; text-align:center;">\${qty}</td>
+                        <td style="padding:10px; text-align:right;">\${price.toLocaleString('vi-VN')}đ</td>
+                        <td style="padding:10px; text-align:right; font-weight:bold; color:var(--pink-dark);">\${subtotal.toLocaleString('vi-VN')}đ</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('adminModalTotalPrice').innerText = total.toLocaleString('vi-VN') + 'đ';
+        })
+        .catch(function(err) {
+            console.error(err);
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red; padding:15px;">Lỗi khi tải chi tiết đơn hàng!</td></tr>';
+        });
+}
+
+function closeAdminModal() {
+    document.getElementById('adminOrderDetailModal').style.display = 'none';
+}
+
+window.addEventListener('click', function(e) {
+    var modal = document.getElementById('adminOrderDetailModal');
+    if (e.target === modal) {
+        closeAdminModal();
+    }
 });
 </script>
 

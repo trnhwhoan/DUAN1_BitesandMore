@@ -11,158 +11,76 @@ import com.example.Util.DBContext;
 
 public class ReviewDAO {
 
-    // Lấy toàn bộ đánh giá kèm tên khách hàng và sản phẩm cho trang quản trị.
+    // 1. LẤY TẤT CẢ ĐÁNH GIÁ/GÓP Ý CHO TRANG ADMIN
     public List<Review> getAllReviews() {
         List<Review> list = new ArrayList<>();
-        String sql = "SELECT r.*, u.full_name AS user_name, p.product_name "
-                + "FROM Review r "
-                + "LEFT JOIN [User] u ON u.user_id = r.user_id "
-                + "LEFT JOIN Product p ON p.product_id = r.product_id "
-                + "ORDER BY r.review_date DESC";
+        // Truy vấn bảng Feedback hoặc Review
+        String sql = "SELECT * FROM Feedback ORDER BY feedback_id DESC";
 
         try (Connection con = DBContext.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
-                Review review = new Review(
-                        rs.getInt("review_id"),
-                        rs.getInt("user_id"),
-                        rs.getInt("product_id"),
-                        rs.getInt("rating"),
-                        rs.getString("content"),
-                        rs.getTimestamp("review_date"));
-                review.setUserName(rs.getString("user_name"));
-                review.setProductName(rs.getString("product_name"));
-                list.add(review);
+                Review r = new Review();
+                r.setReviewId(rs.getInt("feedback_id"));
+                r.setUserName(rs.getString("customer_name")); // Tên khách hàng (Như Hoàn, Nh...)
+                r.setProductName(rs.getString("topic"));       // Chủ đề (Chất lượng sản phẩm, Góp ý chung...)
+                r.setContent(rs.getString("message"));        // Nội dung "oki la ngon bổ rẻ"
+                r.setReviewDate(rs.getTimestamp("created_at"));
+                
+                try {
+                    String st = rs.getString("status");
+                    r.setStatus(st != null ? st : "Active");
+                } catch (Exception e) {
+                    r.setStatus("Active");
+                }
+
+                list.add(r);
             }
         } catch (Exception e) {
+            System.err.println("===> [LỖI getAllReviews]: " + e.getMessage());
             e.printStackTrace();
         }
         return list;
     }
 
-    // Lấy tất cả đánh giá của một sản phẩm
-    public List<Review> getByProductId(int productId) {
+    // 2. LẤY DANH SÁCH HIỂN THỊ RA TRANG CHỦ / FEEDBACK (CHỈ LẤY ACTIVE)
+    public List<Review> getActiveFeedbacks() {
         List<Review> list = new ArrayList<>();
-
-        String sql = "SELECT * FROM Review WHERE product_id = ?";
+        String sql = "SELECT * FROM Feedback WHERE status = 'Active' OR status IS NULL ORDER BY feedback_id DESC";
 
         try (Connection con = DBContext.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, productId);
-
-            ResultSet rs = ps.executeQuery();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Review review = new Review();
-                review.setReviewId(rs.getInt("review_id"));
-                review.setUserId(rs.getInt("user_id"));
-                review.setProductId(rs.getInt("product_id"));
-                review.setRating(rs.getInt("rating"));
-                review.setContent(rs.getString("content"));
-                review.setReviewDate(rs.getTimestamp("review_date"));
-
-                list.add(review);
+                Review r = new Review();
+                r.setReviewId(rs.getInt("feedback_id"));
+                r.setUserName(rs.getString("customer_name"));
+                r.setProductName(rs.getString("topic"));
+                r.setContent(rs.getString("message"));
+                r.setReviewDate(rs.getTimestamp("created_at"));
+                list.add(r);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return list;
     }
 
-    // Thêm đánh giá
-    public boolean insert(Review review) {
-
-        String sql = "INSERT INTO Review(user_id, product_id, rating, content) VALUES (?, ?, ?, ?)";
-
+    // 3. CẬP NHẬT TRẠNG THÁI ẨN / HIỆN
+    public boolean updateReviewStatus(int reviewId, String status) {
+        String sql = "UPDATE Feedback SET status = ? WHERE feedback_id = ?";
         try (Connection con = DBContext.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, review.getUserId());
-            ps.setInt(2, review.getProductId());
-            ps.setInt(3, review.getRating());
-            ps.setString(4, review.getContent());
-
+            ps.setString(1, status);
+            ps.setInt(2, reviewId);
             return ps.executeUpdate() > 0;
-
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-
-        return false;
-    }
-
-    // Cập nhật đánh giá
-    public boolean update(Review review) {
-
-        String sql = "UPDATE Review SET rating = ?, content = ? WHERE review_id = ?";
-
-        try (Connection con = DBContext.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, review.getRating());
-            ps.setString(2, review.getContent());
-            ps.setInt(3, review.getReviewId());
-
-            return ps.executeUpdate() > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    // Xóa đánh giá
-    public boolean delete(int reviewId) {
-
-        String sql = "DELETE FROM Review WHERE review_id = ?";
-
-        try (Connection con = DBContext.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, reviewId);
-
-            return ps.executeUpdate() > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    // Lấy đánh giá theo ID
-    public Review getById(int reviewId) {
-
-        String sql = "SELECT * FROM Review WHERE review_id = ?";
-
-        try (Connection con = DBContext.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, reviewId);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                Review review = new Review();
-                review.setReviewId(rs.getInt("review_id"));
-                review.setUserId(rs.getInt("user_id"));
-                review.setProductId(rs.getInt("product_id"));
-                review.setRating(rs.getInt("rating"));
-                review.setContent(rs.getString("content"));
-                review.setReviewDate(rs.getTimestamp("review_date"));
-
-                return review;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }

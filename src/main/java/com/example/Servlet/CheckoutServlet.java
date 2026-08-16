@@ -1,12 +1,12 @@
 package com.example.Servlet;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,9 +21,9 @@ import com.example.DAO.ProductDAO;
 import com.example.Model.CartDetail;
 import com.example.Model.Order;
 import com.example.Model.OrderDetail;
+import com.example.Model.User;
 import com.example.Model.Payment;
 import com.example.Model.Product;
-import com.example.Model.User;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {

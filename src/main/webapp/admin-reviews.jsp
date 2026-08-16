@@ -81,7 +81,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .admin-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+    .admin-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; table-layout: fixed; }
     .admin-table th {
       background: var(--pink-subtle); color: var(--text-chocolate);
       font-size: 11px; font-weight: 800; text-transform: uppercase;
@@ -91,12 +91,35 @@
 
     .star-rating { color: #ffb400; font-size: 14px; }
 
-    .btn-action-icon {
-      width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-soft);
-      display: inline-flex; align-items: center; justify-content: center;
-      color: var(--text-chocolate); text-decoration: none; transition: all 0.2s;
+    /* STATUS BADGE */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 20px; font-size: 11px;
+      font-weight: 800; text-transform: uppercase;
     }
-    .btn-action-icon.delete:hover { background: #ffe6e6; color: #d32f2f; border-color: #f8b4b4; }
+    .status-badge.visible { background: #e6ffed; color: #22543d; border: 1px solid #b7ebc5; }
+    .status-badge.hidden { background: #f1f2f6; color: #747d8c; border: 1px solid #ced6e0; }
+
+    /* TOGGLE BUTTONS */
+    .btn-toggle-visibility {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; cursor: pointer; border: 1.5px solid transparent;
+    }
+    
+    .btn-toggle-visibility.btn-hide {
+      background: #fff0f3; color: var(--pink-primary); border-color: var(--border-soft);
+    }
+    .btn-toggle-visibility.btn-hide:hover {
+      background: var(--pink-primary); color: #fff; border-color: var(--pink-primary);
+    }
+
+    .btn-toggle-visibility.btn-show {
+      background: #e6f7ff; color: #096dd9; border-color: #91d5ff;
+    }
+    .btn-toggle-visibility.btn-show:hover {
+      background: #096dd9; color: #fff; border-color: #096dd9;
+    }
 
     .minimal-footer {
       border-top: 1px solid var(--border-soft); background: #fff;
@@ -156,7 +179,7 @@
     <div class="admin-topbar">
       <div>
         <div style="font-size:18px; font-weight:900; text-transform:uppercase;">QUẢN LÝ ĐÁNH GIÁ &amp; PHẢN HỒI</div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Xem và kiểm duyệt đánh giá món bánh từ khách hàng</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Xem và kiểm duyệt trạng thái ẩn / hiện đánh giá của khách hàng</div>
       </div>
     </div>
 
@@ -165,57 +188,68 @@
         <table class="admin-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Khách hàng</th>
-              <th>Món bánh</th>
-              <th>Số sao</th>
-              <th>Nội dung bình luận</th>
-              <th>Ngày gửi</th>
-              <th style="text-align:center;">Thao tác</th>
+              <th style="width:7%;">ID</th>
+              <th style="width:16%;">Khách hàng</th>
+              <th style="width:18%;">Món bánh</th>
+              <th style="width:10%;">Số sao</th>
+              <th style="width:25%;">Nội dung bình luận</th>
+              <th style="width:12%; text-align:center;">Trạng thái</th>
+              <th style="width:12%; text-align:center;">Thao tác</th>
             </tr>
           </thead>
           <tbody>
             <c:choose>
               <c:when test="${not empty reviewList}">
                 <c:forEach items="${reviewList}" var="r">
-                  <tr>
+                  <tr style="${r.status == 'Hidden' ? 'opacity:0.6; background:#fafafa;' : ''}">
                     <td><strong>#${r.id}</strong></td>
                     <td><strong>${r.userName}</strong></td>
                     <td><strong style="color:var(--pink-primary);">${r.productName}</strong></td>
-                    <td><span class="star-rating">★★★★★</span></td>
-                    <td style="max-width:280px;">${r.content}</td>
-                    <td><fmt:formatDate value="${r.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
+                    <td>
+                      <span class="star-rating">
+                        <c:forEach begin="1" end="${r.rating}">★</c:forEach>
+                      </span>
+                    </td>
+                    <td style="word-break:break-word;">${r.content}</td>
                     <td style="text-align:center;">
-                      <a href="delete-review?id=${r.id}" class="btn-action-icon delete" title="Xóa đánh giá" onclick="return confirm('Bạn có chắc muốn ẩn/xóa đánh giá này?');">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                      </a>
+                      <c:choose>
+                        <c:when test="${r.status == 'Hidden'}">
+                          <span class="status-badge hidden">Đã ẩn</span>
+                        </c:when>
+                        <c:otherwise>
+                          <span class="status-badge visible">Hiển thị</span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td style="text-align:center;">
+                      <c:choose>
+                        <c:when test="${r.status == 'Hidden'}">
+                          <a href="toggle-review-status?id=${r.id}&status=Active" 
+                             class="btn-toggle-visibility btn-show" 
+                             title="Bấm để hiển thị lại đánh giá này">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            Hiện
+                          </a>
+                        </c:when>
+                        <c:otherwise>
+                          <a href="toggle-review-status?id=${r.id}&status=Hidden" 
+                             class="btn-toggle-visibility btn-hide" 
+                             title="Bấm để ẩn đánh giá này"
+                             onclick="return confirm('Bạn có chắc muốn ẩn đánh giá này không?');">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            Ẩn
+                          </a>
+                        </c:otherwise>
+                      </c:choose>
                     </td>
                   </tr>
                 </c:forEach>
               </c:when>
 
               <c:otherwise>
-                <!-- DỮ LIỆU MẪU HIỂN THỊ KHI CHƯA LOAD DATABASE -->
                 <tr>
-                  <td><strong>#1</strong></td>
-                  <td><strong>Như Hoàn Tr</strong></td>
-                  <td><strong style="color:var(--pink-primary);">BÁNH MÌ BAGUETTE</strong></td>
-                  <td><span class="star-rating">★★★★★</span></td>
-                  <td>Bánh rất giòn ngon, giao hàng thơm phức nóng hổi!</td>
-                  <td>12/08/2026 04:20</td>
-                  <td style="text-align:center;">
-                    <a href="#" class="btn-action-icon delete" title="Xóa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>#2</strong></td>
-                  <td><strong>Hoàn Như</strong></td>
-                  <td><strong style="color:var(--pink-primary);">BÁNH RED VELVET</strong></td>
-                  <td><span class="star-rating">★★★★★</span></td>
-                  <td>Đóng gói đẹp, bánh ăn vừa vị không bị ngọt gắt.</td>
-                  <td>12/08/2026 13:20</td>
-                  <td style="text-align:center;">
-                    <a href="#" class="btn-action-icon delete" title="Xóa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></a>
+                  <td colspan="7" style="text-align:center; padding:32px; color:var(--text-muted);">
+                    Chưa có đánh giá nào trong hệ thống.
                   </td>
                 </tr>
               </c:otherwise>

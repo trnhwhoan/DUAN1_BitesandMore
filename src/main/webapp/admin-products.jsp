@@ -101,12 +101,11 @@
     .p-thumb { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-soft); }
 
     .btn-action-icon {
-      width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-soft);
-      display: inline-flex; align-items: center; justify-content: center;
-      color: var(--text-chocolate); text-decoration: none; transition: all 0.2s;
+      width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-soft);
+      background: #fff; display: inline-flex; align-items: center; justify-content: center;
+      color: var(--text-chocolate); text-decoration: none; transition: all 0.2s ease;
     }
     .btn-action-icon:hover { background: var(--pink-subtle); color: var(--pink-primary); border-color: var(--pink-primary); }
-    .btn-action-icon.delete:hover { background: #ffe6e6; color: #d32f2f; border-color: #f8b4b4; }
 
     .minimal-footer {
       border-top: 1px solid var(--border-soft); background: #fff;
@@ -148,9 +147,9 @@
     </a>
 
     <a href="admin-reviews" class="admin-nav-item">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-  Quản lý đánh giá
-</a>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      Quản lý đánh giá
+    </a>
 
     <div style="margin-top:auto; border-top:1px solid var(--border-soft); padding-top:16px;">
       <a href="logout" class="admin-nav-item" style="color:#d32f2f;">
@@ -196,14 +195,71 @@
                     <td><strong>#${p.id != 0 ? p.id : p.productId}</strong></td>
                     <td><img src="${p.image}" class="p-thumb" onError="this.onerror=null;this.src='images/placeholder.jpg';"></td>
                     <td><strong style="text-transform:uppercase;">${p.productName}</strong></td>
-                    <td>Bánh ngọt</td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${p.categoryId == 4}">
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🥖</span> Bánh mì (Bread)
+                          </span>
+                        </c:when>
+                        <c:when test="${p.categoryId == 3}">
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🍰</span> Bánh kem (Cakes)
+                          </span>
+                        </c:when>
+                        <c:when test="${p.categoryId == 1}">
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🥐</span> Ngọt Bơ &amp; Ngàn Lớp
+                          </span>
+                        </c:when>
+                        <c:when test="${p.categoryId == 5}">
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🍪</span> Bánh quy (Cookie)
+                          </span>
+                        </c:when>
+                        <c:when test="${p.categoryId == 6}">
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🍩</span> Bánh Donuts
+                          </span>
+                        </c:when>
+                        <c:when test="${p.categoryId == 7}">
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🧁</span> Bánh Cupcake
+                          </span>
+                        </c:when>
+                        <c:otherwise>
+                          <span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                            <span>🥐</span> Ngọt Bơ &amp; Ngàn Lớp
+                          </span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
                     <td><strong style="color:var(--pink-primary);"><fmt:formatNumber value="${p.price}" pattern="#,##0"/>đ</strong></td>
-                    <td style="text-align:center;">
-                      <!-- Đổi href thành edit-product?id=... -->
-<a href="edit-product?id=${p.id != 0 ? p.id : p.productId}" class="btn-action-icon" title="Chỉnh sửa">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-</a>
-                    <a href="delete-product?id=${p.id != 0 ? p.id : p.productId}" class="btn-action-icon delete" title="Xóa sản phẩm" onclick="return confirm('Bạn có chắc muốn xóa bánh này?');">
+                    <td style="text-align:center; white-space:nowrap;">
+                      <!-- NÚT CHỈNH SỬA -->
+                      <a href="edit-product?id=${p.id != 0 ? p.id : p.productId}" 
+                         class="btn-action-icon" 
+                         title="Chỉnh sửa sản phẩm"
+                         style="margin-right:8px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 20h9"></path>
+                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                      </a>
+
+                      <!-- NÚT XÓA -->
+                      <a href="admin-delete-product?id=${p.id != 0 ? p.id : p.productId}" 
+                         class="btn-action-icon delete" 
+                         title="Xóa bánh" 
+                         onclick="return confirm('Bạn có chắc chắn muốn xóa món bánh này không?');"
+                         style="border-color:#feb2b2; background:#fff5f5; color:#e53e3e;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                      </a>
                     </td>
                   </tr>
                 </c:forEach>
@@ -215,22 +271,15 @@
                   <td><strong>#1</strong></td>
                   <td><img src="images/5d9fc32d56126074219b204adc604a58.jpg" class="p-thumb" onError="this.onerror=null;this.src='images/placeholder.jpg';"></td>
                   <td><strong>BÁNH MÌ BAGUETTE</strong></td>
-                  <td>Bánh mì</td>
+                  <td><span style="display:inline-flex; align-items:center; gap:6px; font-weight:600;"><span>🥖</span> Bánh mì (Bread)</span></td>
                   <td><strong style="color:var(--pink-primary);">28.000đ</strong></td>
-                  <td style="text-align:center;">
-                    <a href="#" class="btn-action-icon" title="Sửa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></a>
-                    <a href="#" class="btn-action-icon delete" title="Xóa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>#2</strong></td>
-                  <td><img src="images/91865ec3a35f437be843c7b5b3f0c4e0.jpg" class="p-thumb" onError="this.onerror=null;this.src='images/placeholder.jpg';"></td>
-                  <td><strong>BÁNH RED VELVET</strong></td>
-                  <td>Bánh kem</td>
-                  <td><strong style="color:var(--pink-primary);">390.000đ</strong></td>
-                  <td style="text-align:center;">
-                    <a href="#" class="btn-action-icon" title="Sửa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></a>
-                    <a href="#" class="btn-action-icon delete" title="Xóa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></a>
+                  <td style="text-align:center; white-space:nowrap;">
+                    <a href="edit-product?id=1" class="btn-action-icon" title="Chỉnh sửa" style="margin-right:8px;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </a>
+                    <a href="admin-delete-product?id=1" class="btn-action-icon delete" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa bánh này?');" style="border-color:#feb2b2; background:#fff5f5; color:#e53e3e;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                    </a>
                   </td>
                 </tr>
               </c:otherwise>

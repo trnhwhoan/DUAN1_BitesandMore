@@ -446,6 +446,7 @@
       font-size: 13px;
       border-bottom: 1px solid var(--border-soft);
       color: var(--text-chocolate);
+      vertical-align: middle;
     }
     .clickable-order-row { 
       cursor: pointer; 
@@ -455,18 +456,24 @@
       background: var(--pink-subtle) !important; 
     }
 
+    /* STATUS BADGES */
     .status-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
     }
-    .status-badge.pending { background: #fff3cd; color: #856404; }
-    .status-badge.confirmed { background: #e6fffa; color: #234e52; }
-    .status-badge.completed { background: #d4edda; color: #155724; }
-    .status-badge.cancelled { background: #f8d7da; color: #721c24; }
+    .status-badge.pending { background: #fff8e6; color: #b7791f; border: 1px solid #fce8b3; }
+    .status-badge.confirmed { background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; }
+    .status-badge.processing { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+    .status-badge.shipping { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+    .status-badge.delivered { background: #e6fffa; color: #0f766e; border: 1px solid #99f6e4; }
+    .status-badge.completed { background: #e6ffed; color: #22543d; border: 1px solid #b7ebc5; }
+    .status-badge.cancelled { background: #ffe6e6; color: #9b2c2c; border: 1px solid #feb2b2; }
 
     /* CSS MODAL CHI TIẾT ĐƠN HÀNG */
     .order-modal-overlay {
@@ -731,30 +738,40 @@
             <c:choose>
               <c:when test="${not empty myOrders}">
                 <div style="overflow-x:auto;">
-                  <table class="order-table">
+                  <table class="order-table" style="width:100%; table-layout:fixed;">
                     <thead>
                       <tr>
-                        <th>Mã Đơn</th>
-                        <th>Ngày Đặt</th>
-                        <th>Địa Chỉ Giao Bánh</th>
-                        <th>Tổng Tiền</th>
-                        <th>Trạng Thái</th>
+                        <th style="width:12%;">Mã Đơn</th>
+                        <th style="width:18%;">Ngày Đặt</th>
+                        <th style="width:28%;">Địa Chỉ Giao Bánh</th>
+                        <th style="width:14%; text-align:right;">Tổng Tiền</th>
+                        <th style="width:16%; text-align:center;">Trạng Thái</th>
+                        <th style="width:12%; text-align:center;">Thao Tác</th>
                       </tr>
                     </thead>
                     <tbody>
                       <c:forEach items="${myOrders}" var="o">
-                        <tr class="clickable-order-row" onclick="viewOrderDetail('${o.id}')" title="Bấm để xem chi tiết đơn này">
-                          <td><strong style="color:var(--pink-primary); text-decoration:underline;">#BM${o.id}</strong></td>
-                          <td><fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
-                          <td>${o.address}</td>
-                          <td><strong><fmt:formatNumber value="${o.totalPrice}" pattern="#,##0"/>đ</strong></td>
-                          <td>
+                        <tr class="clickable-order-row" onclick="viewOrderDetail('${o.id != 0 ? o.id : o.orderId}')" title="Bấm để xem chi tiết đơn này">
+                          <td><strong style="color:var(--pink-primary); text-decoration:underline;">#BM${o.id != 0 ? o.id : o.orderId}</strong></td>
+                          <td><fmt:formatDate value="${o.createdAt != null ? o.createdAt : o.orderDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+                          <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${o.address != null ? o.address : o.shippingAddress}</td>
+                          <td style="text-align:right;"><strong><fmt:formatNumber value="${o.totalPrice != null ? o.totalPrice : (o.finalAmount != null ? o.finalAmount : o.totalAmount)}" pattern="#,##0"/>đ</strong></td>
+                          <td style="text-align:center;">
                             <c:choose>
                               <c:when test="${o.status == 'Pending' || o.status == 'Chờ xử lý'}">
                                 <span class="status-badge pending">Chờ xử lý</span>
                               </c:when>
                               <c:when test="${o.status == 'Confirmed' || o.status == 'Đã xác nhận'}">
                                 <span class="status-badge confirmed">Đã xác nhận</span>
+                              </c:when>
+                              <c:when test="${o.status == 'Processing' || o.status == 'Đang làm bánh'}">
+                                <span class="status-badge processing">Đang làm bánh</span>
+                              </c:when>
+                              <c:when test="${o.status == 'Shipping' || o.status == 'Đang giao'}">
+                                <span class="status-badge shipping">Đang giao</span>
+                              </c:when>
+                              <c:when test="${o.status == 'Delivered' || o.status == 'Đã giao'}">
+                                <span class="status-badge delivered">Đã giao</span>
                               </c:when>
                               <c:when test="${o.status == 'Completed' || o.status == 'Hoàn thành'}">
                                 <span class="status-badge completed">Hoàn thành</span>
@@ -766,6 +783,19 @@
                                 <span class="status-badge pending">${o.status}</span>
                               </c:otherwise>
                             </c:choose>
+                          </td>
+                          
+                          <!-- CỘT THAO TÁC: NÚT HỦY CHO PENDING VÀ CONFIRMED -->
+                          <td style="text-align:center;" onclick="event.stopPropagation();">
+                            <c:if test="${o.status == 'Pending' || o.status == 'Chờ xử lý' || o.status == 'Confirmed' || o.status == 'Đã xác nhận'}">
+                              <a href="cancel-order?orderId=${o.id != 0 ? o.id : o.orderId}" 
+                                 onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng #BM${o.id != 0 ? o.id : o.orderId} không?');"
+                                 style="display:inline-block; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; text-decoration: none; color: #d32f2f; background: #ffebee; border: 1px solid #ffcdd2; transition: all 0.2s;"
+                                 onmouseover="this.style.background='#d32f2f'; this.style.color='#fff';"
+                                 onmouseout="this.style.background='#ffebee'; this.style.color='#d32f2f';">
+                                HỦY ĐƠN
+                              </a>
+                            </c:if>
                           </td>
                         </tr>
                       </c:forEach>
@@ -800,7 +830,6 @@
       </div>
       
       <div class="order-modal-body">
-        <!-- Bảng danh sách các món bánh trong đơn -->
         <table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;">
           <thead>
             <tr style="background:var(--pink-subtle); border-bottom:1.5px solid var(--border-soft); text-align:left;">
@@ -811,7 +840,6 @@
             </tr>
           </thead>
           <tbody id="modalItemsBody">
-            <!-- Dữ liệu JavaScript sẽ render vào đây -->
           </tbody>
         </table>
 
@@ -930,7 +958,6 @@ function viewOrderDetail(orderId) {
   tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px;">Đang tải chi tiết món bánh...</td></tr>';
   document.getElementById('orderDetailModal').style.display = 'flex';
 
-  // SỬA THÀNH order-detail CHO KHỚP VỚI SERVLET
   fetch('order-detail?orderId=' + orderId)
     .then(res => {
       if (!res.ok) throw new Error("HTTP error " + res.status);

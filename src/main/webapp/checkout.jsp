@@ -471,49 +471,64 @@
         <div class="checkout-col-left">
           
           <!-- THÔNG TIN GIAO HÀNG -->
-          <div class="form-box">
-            <h5 style="border-bottom:2px solid var(--pink-primary);padding-bottom:10px;margin:0 0 20px 0;font-size:15px;font-weight:800;color:var(--text-chocolate);">THÔNG TIN GIAO HÀNG</h5>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>Họ *</label>
-                <input type="text" name="lastName" id="input-lastName" class="field-input" placeholder="Nguyễn" required>
-              </div>
-              <div class="form-group">
-                <label>Tên *</label>
-                <input type="text" name="firstName" id="input-firstName" class="field-input" placeholder="Văn A" required>
-              </div>
-            </div>
+          <!-- KHUNG THÔNG TIN GIAO HÀNG CÓ CHỌN NGÀY NHẬN BÁNH -->
+<div class="content-box-card" style="background:#fff; border:1.5px solid var(--border-soft); border-radius:16px; padding:28px; margin-bottom:24px; box-shadow:0 4px 12px rgba(232,106,133,0.06);">
+  <h2 style="font-size:14px; font-weight:800; text-transform:uppercase; color:var(--text-chocolate); border-bottom:2px solid var(--pink-primary); padding-bottom:10px; margin-top:0; margin-bottom:20px;">
+    THÔNG TIN GIAO HÀNG
+  </h2>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label>Số điện thoại *</label>
-                <input type="tel" name="phone" id="input-phone" class="field-input" placeholder="0905 123 456" required>
-              </div>
-              <div class="form-group">
-                <label>Email nhận hóa đơn</label>
-                <input type="email" name="email" class="field-input" placeholder="nguyenvana@gmail.com">
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>Địa chỉ nhận hàng *</label>
-                <input type="text" name="address" id="input-address" class="field-input" placeholder="Số nhà, tên đường, phường/xã" required>
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>Tỉnh / Thành phố *</label>
-                <input type="text" name="city" class="field-input" value="Đà Nẵng" readonly required>
-              </div>
-              <div class="form-group">
-                <label>Ghi chú giao hàng</label>
-                <input type="text" name="note" class="field-input" placeholder="Giao giờ hành chính, gọi trước khi giao...">
-              </div>
-            </div>
-          </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <!-- HỌ & TÊN -->
+    <div>
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">HỌ *</label>
+      <input type="text" name="lastName" placeholder="Nguyễn" required
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none;">
+    </div>
+    <div>
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">TÊN *</label>
+      <input type="text" name="firstName" placeholder="Văn A" value="${sessionScope.account != null ? sessionScope.account.fullName : ''}" required
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none;">
+    </div>
+
+    <!-- SỐ ĐIỆN THOẠI & EMAIL -->
+    <div>
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">SỐ ĐIỆN THOẠI *</label>
+      <input type="tel" name="phone" placeholder="0905 123 456" value="${sessionScope.account != null ? sessionScope.account.phoneNumber : ''}" required
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none;">
+    </div>
+    <div>
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">EMAIL NHẬN HÓA ĐƠN</label>
+      <input type="email" name="email" placeholder="nguyenvana@gmail.com" value="${sessionScope.account != null ? sessionScope.account.email : ''}"
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none;">
+    </div>
+
+    <!-- ĐỊA CHỈ NHẬN HÀNG (FULL CHIỀU RỘNG) -->
+    <div style="grid-column: span 2;">
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">ĐỊA CHỈ NHẬN HÀNG *</label>
+      <input type="text" name="address" placeholder="Số nhà, tên đường, phường/xã..." value="${sessionScope.account != null ? sessionScope.account.address : ''}" required
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none;">
+    </div>
+
+    <!-- TỈNH/THÀNH PHỐ & NGÀY GIAO BÁNH -->
+    <div>
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">TỈNH / THÀNH PHỐ *</label>
+      <input type="text" name="city" value="Đà Nẵng" readonly
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none; background:var(--pink-subtle);">
+    </div>
+    <div>
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">NGÀY NHẬN BÁNH MONG MUỐN *</label>
+      <input type="date" id="deliveryDate" name="deliveryDate" required
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none; font-family:inherit; background:#fff; color:var(--text-chocolate); cursor:pointer;">
+    </div>
+
+    <!-- GHI CHÚ GIAO HÀNG -->
+    <div style="grid-column: span 2;">
+      <label style="font-size:11px; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px;">GHI CHÚ GIAO HÀNG</label>
+      <input type="text" name="note" placeholder="Giao giờ hành chính, viết chữ lên bánh kem..."
+             style="width:100%; box-sizing:border-box; padding:10px 14px; border:1.5px solid var(--border-soft); border-radius:8px; outline:none;">
+    </div>
+  </div>
+</div>
 
           <!-- PHƯƠNG THỨC THANH TOÁN -->
           <div class="form-box">

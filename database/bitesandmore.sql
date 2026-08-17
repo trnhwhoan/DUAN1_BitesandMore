@@ -5,7 +5,6 @@ GO
 USE BitesandMore;
 GO
 
-
 CREATE TABLE [User] (
     user_id INT PRIMARY KEY IDENTITY(1,1),
     full_name NVARCHAR(100) NOT NULL,

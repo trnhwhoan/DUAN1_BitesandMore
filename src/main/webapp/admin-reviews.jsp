@@ -7,7 +7,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bites &amp; More — Quản Lý Đánh Giá</title>
-  <link rel="stylesheet" href="css/style.css">
   <style>
     :root {
       --pink-primary: #e86a85;
